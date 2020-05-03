@@ -40,10 +40,15 @@
 
 ### HashMap
 
+![](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/11C6FC37-CD47-4412-8BC3-E7CFCBE3594C.png)
+
 - 非同步
 - 支持null键、值
 
 ```java
+public class HashMap<K,V> extends AbstractMap<K,V>
+    implements Map<K,V>, Cloneable, Serializable {
+  
     public V put(K key, V value) {
         return putVal(hash(key), key, value, false, true);
     }
@@ -52,6 +57,8 @@
         int h;
         return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16); //key可以为null
     }
+  
+}
 ```
 
 - put、get常数时间性能
@@ -59,7 +66,7 @@
 - - 数组（桶、哈希值寻址）、链表、链表的阈值
   - lazy-load原则、put方法中初始化
   - resize：初始化、扩容
-- 容量：2的幂数、默认初始化容量16、最大容量
+- 容量：2的幂数、默认初始化容量16、最大容量。可以扩容，扩容后数组大小为当前的 2 倍。
 - 负载因子：0.75f
 - 树化改造
 
@@ -73,17 +80,50 @@ public class HashMap<K,V> extends AbstractMap<K,V>
 
     static final int MAXIMUM_CAPACITY = 1 << 30;
 
-    static final float DEFAULT_LOAD_FACTOR = 0.75f;
+    static final float DEFAULT_LOAD_FACTOR = 0.75f; // loadFactor的默认值
 
     static final int TREEIFY_THRESHOLD = 8;
 
     static final int UNTREEIFY_THRESHOLD = 6;
 
     static final int MIN_TREEIFY_CAPACITY = 64;
+  
+    //HashMap是一个数组，数组中每个元素是一个单向链表。
+    //单向链表中每个节点是，嵌套类 Entry 的实例。
+    //Entry 包含四个属性：key, value, hash 值和用于单向链表的 next。
+    transient Node<K,V>[] table;
+  
+    static class Node<K,V> implements Map.Entry<K,V> {
+        final int hash;
+        final K key;
+        V value;
+        Node<K,V> next;
+    }
+  
+    int threshold; // 扩容的阈值，等于 capacity * loadFactor
+  
+    final float loadFactor; //负载因子
 }
 ```
 
+#### Java7 HashMap
 
+##### put 过程分析
+key可以为空最终会将这个 entry 放到 table[0] 中
+    - 数组初始化
+    - 计算具体数组位置
+    - 添加节点到链表中
+    - 数组扩容
+
+##### get 过程分析
+
+#### Java8 HashMap
+
+##### put 过程分析
+
+数组扩容
+
+##### get 过程分析
 
 ### LinkedHashMap(有序)
 
