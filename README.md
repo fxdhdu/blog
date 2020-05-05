@@ -4,19 +4,22 @@
 ![](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/B6542EC4-09B7-44D4-9ED9-7B017DE6698A.png)
 
 ## Java基本语言特性
-[](4%20Java/Java版本特性列表.md)
-[数据类型](4%20Java/Java的数据类型.md)
+[Java版本特性列表](4%20Java/Java版本特性列表.md)
+[Java基本数据类型](4%20Java/Java的数据类型.md)
 [异常、Throwable、Error、Exception](4%20Java/Java异常层次结构.md)
 [final、finally、finalize](4%20Java/final、finally、finalize.md)
 [volatile、default、native、JNI、tansient](4%20Java/volatile、default、native、JNI、tansient.md)
-[](4%20Java/泛型与类型擦除.md)
+[泛型与类型擦除](4%20Java/泛型与类型擦除.md)
 
 ## Java类库
 [String、StringBuffer、StringBuilder](4%20Java/String、StringBuffer、StringBuilder.md)
 [Vector、ArrayList、LinkedList](4%20Java/Vector、ArrayList、LinkedList.md)
 [Hashtable、HashMap、TreeMap](4%20Java/Hashtable、HashMap、TreeMap.md)
 [IO](4%20Java/Java%20IO.md)
-[](4%20Java/synchronized和ReentrantLock.md)
+[synchronized、ReentrantLock](4%20Java/synchronized和ReentrantLock.md)
+[ThreadLocal](4%20Java/ThreadLocal.md)
+[java.util.concurrent](4%20Java/并发包.md)
+[锁](4%20Java/锁.md)
 
 ## Java虚拟机
 [](4%20Java/Java运行时数据区.md)
@@ -60,4 +63,10 @@
 
 有人说“过早优化是万恶之源”，考虑可靠性、正确性和代码可读性才是大多数应用开发最重要的因素。
 
+
+
 在日常编程中，保证程序的可读性、可维护性，往往比所谓的最优性能更重要。
+
+
+
+我个人认为，能够基础性地理解这些概念和机制，其实对于大多数并发编程已经足够了，毕竟大部分工程师未必会进行更底层、更基础的研发，很多时候解决的是知道与否，真正的提高还要靠实践踩坑。

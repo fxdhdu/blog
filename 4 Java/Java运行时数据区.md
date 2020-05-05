@@ -1,3 +1,7 @@
+
+
+[TOC]
+
 ![]()
 
 
@@ -6,11 +10,17 @@
 
 
 
-Java 对象生命周期
+## Java 对象生命周期
+
+
+
+## Mark Word
 
 
 
 
+
+## 其他实践
 
 java_pid3708.hprof：Sun, HP, SAP 所采用的 HPROF 二进制堆存储文件（Heap Dump）
 
