@@ -17,6 +17,7 @@ public class Object {
     @HotSpotIntrinsicCandidate
     public final native Class<?> getClass();
 
+
     @HotSpotIntrinsicCandidate
     public native int hashCode();
 

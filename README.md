@@ -1,31 +1,48 @@
 [TOC]
 
 # Java
-![](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/B6542EC4-09B7-44D4-9ED9-7B017DE6698A.png)
+![](./4 Java/assert/B6542EC4-09B7-44D4-9ED9-7B017DE6698A.png)
 
 ## Java基本语言特性
 [Java版本特性列表](4%20Java/Java版本特性列表.md)
+
 [Java基本数据类型](4%20Java/Java的数据类型.md)
+
 [异常、Throwable、Error、Exception](4%20Java/Java异常层次结构.md)
+
 [final、finally、finalize](4%20Java/final、finally、finalize.md)
+
 [volatile、default、native、JNI、tansient](4%20Java/volatile、default、native、JNI、tansient.md)
+
 [泛型与类型擦除](4%20Java/泛型与类型擦除.md)
 
 ## Java类库
 [String、StringBuffer、StringBuilder](4%20Java/String、StringBuffer、StringBuilder.md)
+
 [Vector、ArrayList、LinkedList](4%20Java/Vector、ArrayList、LinkedList.md)
+
 [Hashtable、HashMap、TreeMap](4%20Java/Hashtable、HashMap、TreeMap.md)
+
 [IO](4%20Java/Java%20IO.md)
+
 [synchronized、ReentrantLock](4%20Java/synchronized和ReentrantLock.md)
+
 [ThreadLocal](4%20Java/ThreadLocal.md)
+
 [java.util.concurrent](4%20Java/并发包.md)
+
 [锁](4%20Java/锁.md)
 
 ## Java虚拟机
+
 [](4%20Java/Java运行时数据区.md)
+
 [](4%20Java/Java对象的引用.md)
+
 [](4%20Java/类的生命周期.md)
+
 [](4%20Java/ClassLoader、类加载过程、双亲委派模型.md)
+
 [](4%20Java/Java内存模型.md)
 
 
@@ -33,6 +50,7 @@
 [](4%20Java/垃圾收集.md)
 
 [](4%20Java/Java线程的生命周期.md)
+
 [](4%20Java/Java线程池.md)
 
 
