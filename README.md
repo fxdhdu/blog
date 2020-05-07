@@ -1,7 +1,7 @@
 [TOC]
 
 # Java
-![](./4 Java/assert/B6542EC4-09B7-44D4-9ED9-7B017DE6698A.png)
+![](./4%20Java/assert/B6542EC4-09B7-44D4-9ED9-7B017DE6698A.png)
 
 ## Java基本语言特性
 [Java版本特性列表](4%20Java/Java版本特性列表.md)
