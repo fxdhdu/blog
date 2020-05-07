@@ -1,4 +1,13 @@
-[TOC]
+<!-- TOC -->
+
+- [volatile](#volatile)
+- [default](#default)
+- [native(JNI、Java Native Interface)](#nativejnijava-native-interface)
+- [transient](#transient)
+    - [什么时候使用](#什么时候使用)
+    - [使用小结](#使用小结)
+
+<!-- /TOC -->
 
 ## volatile
 
