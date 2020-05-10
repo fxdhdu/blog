@@ -1,3 +1,14 @@
+FileWriter：线程安全write
+
+File
+
+|        | 字节流       | 字符流 |
+| ------ | ------------ | ------ |
+| 输入流 | InputStream  | Reader |
+| 输出流 | OutputStream | Writer |
+
+
+
 
 
 ## java.io 基于流模型实现，交互方式是同步、阻塞

@@ -1,3 +1,7 @@
+[TOC]
+
+
+
 ## Aop的应用
 
 事务管理、安全审计、日志处理
@@ -7,6 +11,60 @@
 使非业务代码更加模块化，使模块更加内聚。减少重复的非业务代码。
 
 
+
+## Aop术语
+
+### 连接点
+
+1. 用方法表示程序执行点
+2. 用相对位置表示方位
+
+### 切点
+
+用于定位特定的连接点
+
+```java
+package org.springframework.aop;
+
+public interface Pointcut {
+
+}
+```
+
+### 增强
+
+1. 用于添加到目标连接点上的一段执行逻辑
+2. 用于定位连接点的方位信息
+
+```java
+package org.springframework.aop;
+
+public interface BeforeAdvice extends Advice {
+
+}
+```
+
+### 目标对象
+
+### 引介
+
+为类添加属性和方法
+
+### 织入
+
+将增强添加到目标类的具体连接点上的过程。
+
+1. 编译期织入 （AspectJ）
+2. 类装载期织入 （AspectJ）
+3. 动态代理织入 （Spring）
+
+### 代理
+
+代理类（实现原类的接口，或则使原类的子类）
+
+### 切面
+
+由切点和增强（引介）组成
 
 ## Aop源码阅读
 

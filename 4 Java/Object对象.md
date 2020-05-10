@@ -26,7 +26,7 @@ public class Object {
     }
 
     @HotSpotIntrinsicCandidate
-    protected native Object clone() throws CloneNotSupportedException;
+    protected native Object clone() throws CloneNotSupportedException; // 浅拷贝。它只会拷贝对象中的基本数据类型的数据（比如，int、long），以及引用对象（SearchWord）的内存地址，不会递归地拷贝引用对象本身。
 
     public String toString() {
         return getClass().getName() + "@" + Integer.toHexString(hashCode());
