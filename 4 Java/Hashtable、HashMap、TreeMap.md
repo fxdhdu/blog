@@ -38,7 +38,25 @@
 
 
 
-### HashMap
+### HashMap（java 7（Entry） / java 8（Node/TreeNode））数组/链表/红黑树
+
+​	HashMap内部数据是以散列表的方式进行存储的。散列表table是一个实现了Entry接口的Node数组。每一个Node（Entry）存储了key，key的hash值和value值。以及一个Node单向链表。
+
+​	当往HashMap中添加元素时，首先计算key的hash值。key为null时，hash值为0，key非空时，调用key的hashcode方法计算得到h，然后h无符号（>>>）右移16位，与其自身异或，得到最终的hash值。
+
+​	如果table为null或长度为0，则resize（）扩容；
+
+​		创建新的大数组，迁移数据
+
+​	计算下标 (n - 1) & hash （取hash值的低几位），如果下表下没有链表，则newNode（）
+
+
+
+判断重复的key
+
+
+
+
 
 ![](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/11C6FC37-CD47-4412-8BC3-E7CFCBE3594C.png)
 
@@ -66,8 +84,9 @@ public class HashMap<K,V> extends AbstractMap<K,V>
 - - 数组（桶、哈希值寻址）、链表、链表的阈值
   - lazy-load原则、put方法中初始化
   - resize：初始化、扩容
-- 容量：2的幂数、默认初始化容量16、最大容量。可以扩容，扩容后数组大小为当前的 2 倍。
-- 负载因子：0.75f
+- 容量：始终保持2的幂数、默认初始化容量16。可以扩容，扩容后数组大小为当前的 2 倍。
+- 负载因子：默认为0.75f
+- 扩容阈值：容量 * 负载因子
 - 树化改造
 
 ```java
@@ -106,24 +125,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
 }
 ```
 
-#### Java7 HashMap
-
-##### put 过程分析
-key可以为空最终会将这个 entry 放到 table[0] 中
-    - 数组初始化
-    - 计算具体数组位置
-    - 添加节点到链表中
-    - 数组扩容
-
-##### get 过程分析
-
-#### Java8 HashMap
-
-##### put 过程分析
-
-数组扩容
-
-##### get 过程分析
+##### 
 
 ### LinkedHashMap(有序)
 
