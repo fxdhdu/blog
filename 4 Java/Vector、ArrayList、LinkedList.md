@@ -118,11 +118,47 @@ public class ArrayList<E> extends AbstractList<E>
 
 ### Set
 
+#### TreeMap
+
 #### TreeSet
+
+有序的Set集合
+
+TreeSet中的元素支持2种排序方式：自然排序 或者 根据创建TreeSet 时提供的 Comparator 进行排序。
+
+TreeSet是非同步的
+
+它的iterator 方法返回的迭代器是fail-fast的
+
+- 主要方法
+  - add：把节点添加到树上
+  - remove：若传了Comparator，删除时根据Comparator比较，而不是Hash值
+  - pollFirst：获取最左元素，并删除
+
+![img](https://img-blog.csdnimg.cn/20190710200359248.jpeg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ExNDM5Nzc1NTIw,size_16,color_FFFFFF,t_70)
+
+```java
+public class TreeSet<E> extends AbstractSet<E>
+    implements NavigableSet<E>, Cloneable, java.io.Serializable
+{
+    private transient NavigableMap<E,Object> m;
+  
+}
+```
+
+```java
+public class TreeMap<K,V>
+    extends AbstractMap<K,V>
+    implements NavigableMap<K,V>, Cloneable, java.io.Serializable
+{
+}
+```
+
+
 
 #### HashSet
 
-##### LinkedHashSet
+#### LinkedHashSet
 
 ### Queue/Deque
 
