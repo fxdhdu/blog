@@ -38,7 +38,11 @@
 
 
 
-### HashMap（java 7（Entry） / java 8（Node/TreeNode））数组/链表/红黑树
+### HashMap
+
+- java 7（Entry） 
+
+- java 8（Node/TreeNode） 数组/链表/红黑树
 
 ​	HashMap内部数据是以散列表的方式进行存储的。散列表table是一个实现了Entry接口的Node数组。每一个Node（Entry）存储了key，key的hash值和value值。以及一个Node单向链表。
 
@@ -58,7 +62,7 @@
 
 
 
-![](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/11C6FC37-CD47-4412-8BC3-E7CFCBE3594C.png)
+![](./assert/11C6FC37-CD47-4412-8BC3-E7CFCBE3594C.png)
 
 - 非同步
 - 支持null键、值
@@ -66,6 +70,8 @@
 ```java
 public class HashMap<K,V> extends AbstractMap<K,V>
     implements Map<K,V>, Cloneable, Serializable {
+  
+    transient int size; //键值对数目
   
     public V put(K key, V value) {
         return putVal(hash(key), key, value, false, true);
@@ -75,6 +81,64 @@ public class HashMap<K,V> extends AbstractMap<K,V>
         int h;
         return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16); //key可以为null
     }
+ 
+// 第四个参数 onlyIfAbsent 如果是 true，那么只有在不存在该 key 时才会进行 put 操作。key存在时，返回oldValue。
+// 第五个参数 evict 我们这里不关心  
+  final V putVal(int hash, K key, V value, boolean onlyIfAbsent,
+                   boolean evict) {
+        Node<K,V>[] tab;  // 指向table的引用
+        Node<K,V> p; 
+        int n,  ；// tab的长度
+        i;
+        if ((tab = table) == null || (n = tab.length) == 0)
+            n = (tab = resize()).length; // 第一次执行
+     // 找到具体的数组下标，如果此位置没有值，那么直接初始化一下 Node 并放置在这个位置就可以了
+        if ((p = tab[i = (n - 1) & hash]) == null)
+            tab[i] = newNode(hash, key, value, null);
+        else { // 数组该位置有数据
+            Node<K,V> e; K k;
+          // 首先，判断该位置的第一个数据和我们要插入的数据，key 是不是"相等"，如果是，取出这个节点
+            if (p.hash == hash &&
+                ((k = p.key) == key || (key != null && key.equals(k))))
+                e = p;
+            else if (p instanceof TreeNode) // 红黑树
+                e = ((TreeNode<K,V>)p).putTreeVal(this, tab, hash, key, value);
+            else {
+              // 到这里，说明数组该位置上是一个链表
+                for (int binCount = 0; ; ++binCount) {
+                    if ((e = p.next) == null) {
+                      // TREEIFY_THRESHOLD 为 8，所以，如果新插入的值是链表中的第 8 个
+                    // 会触发下面的 treeifyBin，也就是将链表转换为红黑树
+                        p.next = newNode(hash, key, value, null);
+                        if (binCount >= TREEIFY_THRESHOLD - 1) // -1 for 1st
+                            treeifyBin(tab, hash);
+                        break;
+                    }
+                  // 如果在该链表中找到了"相等"的 key(== 或 equals)
+                    if (e.hash == hash &&
+                        ((k = e.key) == key || (key != null && key.equals(k))))
+                      // 此时 break，那么 e 为链表中[与要插入的新值的 key "相等"]的 node
+                        break;
+                    p = e;
+                }
+            }
+        // e!=null 说明存在旧值的key与要插入的key"相等"
+        // 对于我们分析的put操作，下面这个 if 其实就是进行 "值覆盖"，然后返回旧值
+            if (e != null) { // existing mapping for key
+                V oldValue = e.value;
+                if (!onlyIfAbsent || oldValue == null)
+                    e.value = value;
+                afterNodeAccess(e);
+                return oldValue;
+            }
+        }
+        ++modCount;
+    // 如果 HashMap 由于新插入这个值导致 size 已经超过了阈值，需要进行扩容
+        if (++size > threshold)
+            resize();
+        afterNodeInsertion(evict);
+        return null;
+    }  
   
 }
 ```
@@ -101,7 +165,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
 
     static final float DEFAULT_LOAD_FACTOR = 0.75f; // loadFactor的默认值
 
-    static final int TREEIFY_THRESHOLD = 8;
+    static final int TREEIFY_THRESHOLD = 8; // 树化阈值，插入链表第8个元素时，会进行树化。
 
     static final int UNTREEIFY_THRESHOLD = 6;
 

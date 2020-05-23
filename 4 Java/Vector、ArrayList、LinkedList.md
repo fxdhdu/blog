@@ -4,7 +4,7 @@
 
 ## Java集合框架
 
-![](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/675536edf1563b11ab7ead0def1215c7.png)
+![](./assert/675536edf1563b11ab7ead0def1215c7.png)
 
 集合的根Collection
 
@@ -80,6 +80,15 @@ public class ArrayList<E> extends AbstractList<E>
         elementData[s] = e; // 顺序存储
         size = s + 1;
     }
+ 
+    public E get(int index) {
+        Objects.checkIndex(index, size);
+        return elementData(index);
+    }  
+  
+    E elementData(int index) {
+        return (E) elementData[index];
+    }  
   
     private Object[] grow() {
         return grow(size + 1);
@@ -111,8 +120,62 @@ public class ArrayList<E> extends AbstractList<E>
 
 #### LinkedList
 
-- 双向链表
 - LinkedList是基于链表实现的，从源码可以看出是一个双向链表。除了当做链表使用外，它也可以被当作堆栈、队列或双端队列进行操作。不是线程安全的，继承AbstractSequentialList实现List、Deque、Cloneable、Serializable。
+
+```java
+public class LinkedList<E>
+    extends AbstractSequentialList<E>
+    implements List<E>, Deque<E>, Cloneable, java.io.Serializable
+{
+    transient Node<E> first;
+
+    transient Node<E> last;
+  
+    private static class Node<E> {
+        E item;
+        Node<E> next;
+        Node<E> prev;
+
+        Node(Node<E> prev, E element, Node<E> next) {
+            this.item = element;
+            this.next = next;
+            this.prev = prev;
+        }
+    }
+  
+    public E get(int index) {
+        checkElementIndex(index);
+        return node(index).item;
+    }
+  
+    Node<E> node(int index) {
+        // assert isElementIndex(index);
+
+        if (index < (size >> 1)) {
+            Node<E> x = first;
+            for (int i = 0; i < index; i++)
+                x = x.next;
+            return x;
+        } else {
+            Node<E> x = last;
+            for (int i = size - 1; i > index; i--)
+                x = x.prev;
+            return x;
+        }
+    }
+}
+```
+
+#### 总结
+
+ArrayList和LinkedList是Java集合框架下，列表（不是链表，链表是底层数据结构）接口List的两种不同实现。
+
+|          | ArrayList                                    | LinkedList             |
+| -------- | -------------------------------------------- | ---------------------- |
+| 数据结构 | Object数组                                   | 双向链表               |
+|          | 非线程安全                                   | 非线程安全             |
+| 访问     | get方法随机访问                              | get方法顺序访问        |
+| 插入删除 | 顺序存储，直接在数组末尾插入。数组满时扩容。 | 可在链表头部或尾部插入 |
 
 
 

@@ -14,7 +14,7 @@
   - Checked Exception 的假设是我们捕获了异常，然后恢复程序。
   - 编译器将检查你是否为所有的checked exceptions提供了异常处理机制。
   - 比如IOException就必须做异常处理，否则编译无法通过。
-   ![image-20200501183447589](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/image-20200501183447589.png)
+   ![image-20200501183447589](./assert/image-20200501183447589.png)
   
   
 
@@ -33,7 +33,8 @@
 | InterruptedException               | Thrown when a thread is waiting, sleeping, or otherwise occupied, and the thread is interrupted, either before or during the activity.当线程被interrupted时抛出此异常。当我们看到方法上带有 throws InterruptedException 时，我们就要知道，这个方法应该是阻塞方法，我们如果希望它能早点返回的话，我们往往可以通过中断来实现。 https://docs.oracle.com/javase/10/docs/api/java/lang/InterruptedException.html |
 | ExecutionException                 | Exception thrown when attempting to retrieve the result of a task that aborted by throwing an exception. This exception can be inspected using the Throwable.getCause() method.线程池中有任务执行失败时，抛出的异常 |
 | TimeoutException                   |                                                              |
-| NullPointerException               |                                                              |
+| NullPointerException               | 对null 调用成员访问符时，报空指针                            |
+| FileNotFoundException              | extends IOException                                          |
 | IllegalArgumentException           |                                                              |
 | NoSuchMethodError                  | 《Spring》81：在类路径下放置了多个不同版本的类包。           |
 | ClassNotFoundException             | 从本地系统载入Class文件时，找不到该Class文件。jar包找不到。  |

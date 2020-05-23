@@ -88,7 +88,7 @@
 
 ![线程状态转换](./assert/949937DB-1B3C-4A43-BBC8-9FDC88E504EF.png)
 
-![](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/3169b7ca899afeb0359f132fb77c29dc.png)
+![](./assert/3169b7ca899afeb0359f132fb77c29dc.png)
 
 ## 执行new Thread，代码做了什么？
 
