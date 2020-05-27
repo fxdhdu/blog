@@ -16,6 +16,15 @@ public interface Collection<E> extends Iterable<E> {
 
 ### List
 
+```java
+public abstract class AbstractList<E> extends AbstractCollection<E> implements List<E> {
+    protected transient int modCount = 0; //当前集合的版本号，每次修改(增、删)集合都会加1
+
+}
+```
+
+
+
 #### Vector
 
 - 线程安全，方法用synchronized修饰。

@@ -1,32 +1,6 @@
-<!-- TOC -->
 
-- [volatile](#volatile)
-- [default](#default)
-- [native(JNI、Java Native Interface)](#nativejnijava-native-interface)
-- [transient](#transient)
-    - [什么时候使用](#什么时候使用)
-    - [使用小结](#使用小结)
 
-<!-- /TOC -->
-
-## volatile
-
-- 可见性
-
-- AQS里面的state、waitstatus
-
-```java
-      /**
-       * The synchronization state.
-       */
-      private volatile int state;
-
-      static final class Node {
-        volatile int waitStatus;
-      }
-```
-
-  
+[TOC]
 
 ## default
 
@@ -35,7 +9,6 @@
 - Java8的新特性
 - default常用于接口中，我们本来写Java接口的时候，方法是不能有方法体的。default关键字在接口中修饰方法时，方法可以有方法体。
 - default关键字可以让接口中的方法可以有默认的方法体，当一个类实现这个接口时，可以不用去实现这个方法，当然，这个类若实现这个方法，就等于子类覆盖了这个方法，最终运行结果符合Java多态特性。
-
 
 
 ## native(JNI、Java Native Interface)
@@ -66,3 +39,4 @@ http://www.importnew.com/21517.html
 4. 变量如果是用户自定义类变量，则该类需要实现Serializable接口，才能被transient修饰。
 5. 被transient关键字修饰的变量不再能被序列化，一个静态变量不管是否被transient修饰，均不能被序列化。
 6. 若实现Externalizable接口（手动序列化），则可在writeExternal方法中指定所要序列化的变量，这与是否被transient修饰无关。此时被transient修饰的变量也可被序列化。
+

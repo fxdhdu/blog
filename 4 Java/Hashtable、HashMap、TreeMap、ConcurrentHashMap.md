@@ -205,6 +205,63 @@ public class HashMap<K,V> extends AbstractMap<K,V>
 
 
 
+## ConcurrentHashMap
+
+java并发包中，线程安全的HashMap实现。
+
+### Java7
+
+分段锁Segment。
+
+ConcurrentHashMap 是一个 Segment 数组，Segment 通过继承 ReentrantLock 来进行加锁，所以每次需要加锁的操作锁住的是一个 segment，这样只要保证每个 Segment 是线程安全的，也就实现了全局的线程安全。
+
+多少个Segment，理论上就支持最多多少个线程并发写入。
+
+### Java8
+
+结构上与HashMap基本一样。
+
+![4](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/Java8ConcurrentHashMap结构.png)
+
+```java
+public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
+    implements ConcurrentMap<K,V>, Serializable {
+  
+  //并行级别、并发数、Segment 数。默认是 16，也就是说 ConcurrentHashMap 有 16 个 Segments，所以理论上，这个时候，最多可以同时支持 16 个线程并发写，只要它们的操作分别分布在不同的 Segment 上。这个值可以在初始化的时候设置为其他值，但是一旦初始化以后，它是不可以扩容的。
+    private static final int DEFAULT_CONCURRENCY_LEVEL = 16;
+    private static final float LOAD_FACTOR = 0.75f;
+  
+  
+      static class Segment<K,V> extends ReentrantLock implements Serializable {
+        private static final long serialVersionUID = 2249069246763182397L;
+        final float loadFactor;
+        Segment(float lf) { this.loadFactor = lf; }
+    }
+  
+    public ConcurrentHashMap() {
+    }  
+  
+    public ConcurrentHashMap(int initialCapacity,
+                             float loadFactor, int concurrencyLevel) {
+        if (!(loadFactor > 0.0f) || initialCapacity < 0 || concurrencyLevel <= 0)
+            throw new IllegalArgumentException();
+        if (initialCapacity < concurrencyLevel)   // Use at least as many bins
+            initialCapacity = concurrencyLevel;   // as estimated threads
+        long size = (long)(1.0 + (long)initialCapacity / loadFactor);
+        int cap = (size >= (long)MAXIMUM_CAPACITY) ?
+            MAXIMUM_CAPACITY : tableSizeFor((int)size);
+        this.sizeCtl = cap;
+    }  
+  
+}
+```
+
+
+
+CAS
+
+synchronized：获取Node数组该位置的头结点的监视器锁
+
 ## hashCode和equals的基本约定
 
 对象的散列码是为了更好的支持基于哈希机制的Java集合类，例如 Hashtable, HashMap, HashSet 等。
@@ -260,3 +317,5 @@ public native int hashCode();
 ## 参考
 
 [一次性搞清楚equals和hashCode](https://mp.weixin.qq.com/s/uQEdjCq-zP5C8Z5jwHyoag)
+
+[Java7/8 中的 HashMap 和 ConcurrentHashMap 全解析](https://www.javadoop.com/post/hashmap)

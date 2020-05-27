@@ -1,5 +1,33 @@
 [TOC]
 
+Spring IOC 容器初始化的过程也就是spring中Bean的生命周期。
+
+
+
+## 从两个层面定义Bean的生命周期
+
+Bean的作用范围
+
+实例化Bean时所经历的一系列阶段
+
+
+
+## BeanFactory中Bean的生命周期
+
+Spring着手实例化Bean  -> 销毁Bean
+
+
+
+## ApplicationContext中Bean的生命周期
+
+
+
+
+
+
+
+
+
 
 
 ## Spring核心依赖
@@ -24,9 +52,9 @@
 | ClassPathXmlApplicationContext     | 从类名可知，通过类路径下的xml文件来构造ApplicationContext。 |
 | AnnotationConfigApplicationContext | spring boot中用这种方式？                                   |
 
-![](../4 Java/assert/ApplicationContext继承结构.png)
+![](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/ApplicationContext继承结构.png)
 
-![](./assert/92EB51A7-5D4E-4DE5-9C44-AAC396CB1AAC.png)
+![](/Users/fanxudong/IdeaProjects/blog/3 Spring/assert/92EB51A7-5D4E-4DE5-9C44-AAC396CB1AAC.png)
 
 最顶层 BeanFactory 接口的方法都是获取单个 Bean 的。
 

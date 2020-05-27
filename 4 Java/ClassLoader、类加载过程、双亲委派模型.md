@@ -38,7 +38,7 @@ Bootstrap ClassLoader不继承自ClassLoader，因为它不是一个普通的Jav
 
 当一个ClassLoader实例需要加载某个类时，它先把这个任务委托给它的父类加载器（递归调用）。
 
-首先由最顶层的类加载器Bootstrap ClassLoader试图加载，如果没加载到，则把任务转交给Extension ClassLoader试图加载，如果也没加载到，则转交给App ClassLoader 进行加载，如果它也没有加载得到的话，则返回给委托的发起者，由它到指定的文件系统或网络等URL中加载该类。
+首先由最顶层的类加载器Bootstrap ClassLoader试图加载，如果没加载到，则把任务转交给Extension ClassLoader试图加载，如果也没加载到，则转交给App ClassLoader 进行加载，如果它也没有加载得到的话，则返回给委托的发起者，由它到指定的文件系统或网络等URL中加载该类。（自定义的java.lang.String不会被加载，但是会被编译）
 
 如果它们都没有加载到这个类时，则抛出ClassNotFoundException异常。
 
