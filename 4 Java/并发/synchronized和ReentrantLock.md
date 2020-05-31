@@ -1,18 +1,21 @@
 [TOC]
 
-| synchronized                   | ReentrantLock                                                |
-| ------------------------------ | ------------------------------------------------------------ |
-| java内建同步机制               | java.util.concurrent.locks 包中提供                          |
-| 无法控制公平性，其为非公平锁。 | 可以控制 fairness(公平性)。公平锁，倾向于将锁赋予等待时间最久的线程。可减少线程“饥饿”，但会降低吞吐量。 |
-| 偏斜锁                         | 再入锁，当一个线程试图获取一个它已经获取的锁时，这个获取动作就自动成功。锁的持有是以线程为单位。 |
+| synchronized                                                | ReentrantLock                                                |
+| ----------------------------------------------------------- | ------------------------------------------------------------ |
+| java内建同步机制，原生语法。                                | java.util.concurrent.locks （J.U.C）包中提供。api层面的互斥锁 |
+| 悲观锁，阻塞同步                                            | 悲观锁，阻塞同步                                             |
+| 无法控制公平性，其为非公平锁。                              | 可以控制 fairness(公平性)，默认为非公平。公平锁是指多个线程同时等待同一个锁时，倾向于将锁赋予等待时间最久的线程（按照申请锁的时间顺序来依次获得锁）。可减少线程“饥饿”，但会降低吞吐量。 |
+| 偏斜锁                                                      | 再入锁，当一个线程试图获取一个它已经获取的锁时，这个获取动作就自动成功。锁的持有是以线程为单位。 |
+| 本线程可重入                                                | 可重入                                                       |
+| 可修饰实例方法、类方法（静态）                              | lock/unlock/try/finally                                      |
+|                                                             | 等待可中断：当持有锁的线程长期不释放锁的时候，正在等待的线程可以选择放弃等待。 |
+| 锁对象的wait、notify、notifyAll方法可以实现一个隐含的条件。 | 锁可以绑定多个条件。一个ReentrantLock对象可以同时绑定多个Condition对象，只需多次调用newCondition方法即可。 |
 
 
 
 ## synchronized
 
 - 提供了互斥的语义和可见性
-- 阻塞 
-- 悲观锁
 - 修饰静态方法，锁对象为类的Class对象（ClassName.class，永久代/Metaspace中）
 - 修饰非静态方法，锁对象为this （当前类实例）
 - 修饰代码块
@@ -42,7 +45,6 @@ JVM 优化 synchronized 运行的机制，当 JVM 检测到不同的竞争状况
 
 ## ReentrantLock
 - java 5引入
-- 使用时需显示获取和释放锁。
 
 ```java
 public class ReentrantLock implements Lock, java.io.Serializable {
@@ -75,8 +77,6 @@ public class ReentrantLock implements Lock, java.io.Serializable {
   
 }
 ```
-
-- 定义条件
 
 ## 性能比较
 - 低竞争场景

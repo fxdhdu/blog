@@ -1,5 +1,7 @@
 ## ThreadLocal、Thread、ThreadLocalMap
 
+![在这里插入图片描述](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyODYyODgy,size_16,color_FFFFFF,t_70.png)
+
 ThreadLocal称为线程本地变量、线程本地存储，用于线程间的数据隔离。
 
 每个线程的Thread类实例，都有一个ThreadLocalMap属性的本地变量。存放了当前线程ThreadLocal变量的副本。
@@ -12,6 +14,8 @@ public class Thread implements Runnable {
 ```
 ```java
 public class ThreadLocal<T> {
+  
+    private final int threadLocalHashCode = nextHashCode();  
   
     static class ThreadLocalMap {
 
