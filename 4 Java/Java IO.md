@@ -37,13 +37,44 @@ File 抽象
 
 NIO（Nonblocking I/O，非阻塞IO）：NIO的单线程能处理连接的数量比BIO要高出很多
 
-Channel
+### Channel
 
-Selector
+通道是数据来源或数据写入的目的地
 
-Buffer
+![](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/channel.png)
+
+- FileChannel：文件通道，用于文件的读和写
+- DatagramChannel：用于 UDP 连接的接收和发送
+- SocketChannel：把它理解为 TCP 连接通道，简单理解就是 TCP 客户端
+- ServerSocketChannel：TCP 对应的服务端，用于监听某个端口进来的请求
+
+### Selector
+
+### Buffer
+
+一个 Buffer 本质上是内存中的一块，我们可以将数据写入这块内存，之后从这块内存获取数据。
+
+![](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/6.png)
 
 
+
+ByteBuffer：核心
+
+MappedByteBuffer 用于实现内存映射文件
+
+position
+
+limit
+
+capacity
+
+mark
+
+
+
+写入模式
+
+读出模式
 
 ## NIO 2 异步非阻塞，基于事件和回调机制
 
@@ -64,6 +95,4 @@ NIO 提供的高性能数据操作方式是基于什么原理，如何使用？
 
 
 ## 参考
-
-[Netty入门教程——认识Netty](https://www.jianshu.com/p/b9f3f6a16911)
 
