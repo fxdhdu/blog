@@ -1,7 +1,5 @@
 [TOC]
 
-
-
 ## Hashtable、HashMap、TreeMap的区别
 
 ### HashTable
@@ -34,7 +32,7 @@
     }
 ```
 
-- 方法都加了synchronized
+- 对元素的操作是线程安全的，方法都加了synchronized。
 
 
 
@@ -64,7 +62,7 @@
 
 ![](./assert/11C6FC37-CD47-4412-8BC3-E7CFCBE3594C.png)
 
-- 非同步
+- 非同步，线程不安全
 - 支持null键、值
 
 ```java
@@ -195,12 +193,23 @@ public class HashMap<K,V> extends AbstractMap<K,V>
 
 - 遍历顺序符合插入顺序
 
+
+```java
+public class LinkedHashMap<K,V>
+    extends HashMap<K,V>
+    implements Map<K,V>
+{
   
+  
+}
+```
+
+
 
 ### TreeMap
 
 - 红黑树
-- 顺序访问
+- 顺序访问原始（通过平衡二叉树的遍历）
 - 指定Comparator、Comparable（自然顺序）
 
 
@@ -319,3 +328,5 @@ public native int hashCode();
 [一次性搞清楚equals和hashCode](https://mp.weixin.qq.com/s/uQEdjCq-zP5C8Z5jwHyoag)
 
 [Java7/8 中的 HashMap 和 ConcurrentHashMap 全解析](https://www.javadoop.com/post/hashmap)
+
+[20 | 散列表（下）：为什么散列表和链表经常会一起使用？](https://time.geekbang.org/column/article/64858)
