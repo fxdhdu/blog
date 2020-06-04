@@ -64,10 +64,83 @@
 
 - 非同步，线程不安全
 - 支持null键、值
+- put、get常数时间性能
+- 内部实现基本点
+- - 数组（桶、哈希值寻址）、链表、链表的阈值
+  - lazy-load原则、put方法中初始化
+  - resize：初始化、扩容
+- 容量：始终保持2的幂数、默认初始化容量16。可以扩容，扩容后数组大小为当前的 2 倍。
+- 负载因子：默认为0.75f
+- 扩容阈值：容量 * 负载因子
+- 树化改造
+
+### HashMap源码阅读
+
+### 创建测试代码
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+public class HashMapStudy {
+
+    public static void main(String[] args) {
+        // HashMap 初始化
+        // 初始化 loadFactor（负载因子）。使用默认值 DEFAULT_LOAD_FACTOR = 0.75f 。
+        // 初始化 threshold（阈值），执行resize需要达到的大小 capacity * load factor。
+        // threshold的值本身不是capacity * load factor计算锁得？
+        HashMap<Integer, Integer> map = new HashMap<>(8);
+
+        // 插入元素
+        for (int i = 0; i < 8; i++) {
+            // 根据Key计算Hash值。
+            map.put(i, i);
+        }
+
+        // 取出元素
+        map.get(1);
+
+        // 扩容
+        map.put(9, 9);
+    }
+}
+```
+
+![image-20200605002920940](./assert/image-20200605002920940.png)
 
 ```java
 public class HashMap<K,V> extends AbstractMap<K,V>
     implements Map<K,V>, Cloneable, Serializable {
+  
+    private static final long serialVersionUID = 362498820763181265L;
+
+    static final int DEFAULT_INITIAL_CAPACITY = 1 << 4; // aka 16
+
+    static final int MAXIMUM_CAPACITY = 1 << 30;
+
+    static final float DEFAULT_LOAD_FACTOR = 0.75f; // loadFactor的默认值
+
+    static final int TREEIFY_THRESHOLD = 8; // 树化阈值，插入链表第8个元素时，会进行树化。
+
+    static final int UNTREEIFY_THRESHOLD = 6;
+
+    static final int MIN_TREEIFY_CAPACITY = 64;
+  
+    //HashMap是一个数组，数组中每个元素是一个单向链表。
+    //单向链表中每个节点是，嵌套类 Entry 的实例。
+    //Entry 包含四个属性：key, value, hash 值和用于单向链表的 next。
+    transient Node<K,V>[] table;
+  
+    static class Node<K,V> implements Map.Entry<K,V> {
+        final int hash;
+        final K key;
+        V value;
+        Node<K,V> next;
+    }
+  
+    int threshold; // 扩容的阈值，等于 capacity * loadFactor
+  
+    final float loadFactor; //负载因子  
   
     transient int size; //键值对数目
   
@@ -141,53 +214,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
 }
 ```
 
-- put、get常数时间性能
-- 内部实现基本点
-- - 数组（桶、哈希值寻址）、链表、链表的阈值
-  - lazy-load原则、put方法中初始化
-  - resize：初始化、扩容
-- 容量：始终保持2的幂数、默认初始化容量16。可以扩容，扩容后数组大小为当前的 2 倍。
-- 负载因子：默认为0.75f
-- 扩容阈值：容量 * 负载因子
-- 树化改造
 
-```java
-public class HashMap<K,V> extends AbstractMap<K,V>
-    implements Map<K,V>, Cloneable, Serializable {
-
-    private static final long serialVersionUID = 362498820763181265L;
-
-    static final int DEFAULT_INITIAL_CAPACITY = 1 << 4; // aka 16
-
-    static final int MAXIMUM_CAPACITY = 1 << 30;
-
-    static final float DEFAULT_LOAD_FACTOR = 0.75f; // loadFactor的默认值
-
-    static final int TREEIFY_THRESHOLD = 8; // 树化阈值，插入链表第8个元素时，会进行树化。
-
-    static final int UNTREEIFY_THRESHOLD = 6;
-
-    static final int MIN_TREEIFY_CAPACITY = 64;
-  
-    //HashMap是一个数组，数组中每个元素是一个单向链表。
-    //单向链表中每个节点是，嵌套类 Entry 的实例。
-    //Entry 包含四个属性：key, value, hash 值和用于单向链表的 next。
-    transient Node<K,V>[] table;
-  
-    static class Node<K,V> implements Map.Entry<K,V> {
-        final int hash;
-        final K key;
-        V value;
-        Node<K,V> next;
-    }
-  
-    int threshold; // 扩容的阈值，等于 capacity * loadFactor
-  
-    final float loadFactor; //负载因子
-}
-```
-
-##### 
 
 ### LinkedHashMap(有序)
 
