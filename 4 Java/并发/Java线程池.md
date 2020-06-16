@@ -45,7 +45,7 @@ public ThreadPoolExecutor(int corePoolSize,
 | maximumPoolSize      | 表示线程池创建的最大线程数。                                 |
 | keepAliveTime & unit | 如果一个线程空闲了keepAliveTime & unit这么久，而且线程池的线程数大于 corePoolSize ，那么这个空闲的线程就要被回收了。 |
 | workQueue            | 工作队列。Executors 提供的很多方法默认使用的都是无界的 LinkedBlockingQueue，高负载情境下，无界队列很容易导致 OOM，而 OOM 会导致所有请求都无法处理，这是致命问题。所以强烈建议使用有界队列。 |
-| threadFactory        | 通过这个参数你可以自定义如何创建线程，例如你可以给线程指定一个有意义的名字。 |
+| threadFactory        | 通过这个参数你可以自定义如何创建线程，例如你可以给线程指定一个有意义的名字。<br>this.thread = getThreadFactory().newThread(this); |
 | handler              | 通过这个参数你可以自定义任务的拒绝策略。如果线程池中所有的线程都在忙碌，并且工作队列也满了（前提是工作队列是有界队列），那么此时提交任务，线程池就会拒绝接收。至于拒绝的策略，你可以通过 handler 这个参数来指定。ThreadPoolExecutor 已经提供了以下 4 种策略。 |
 
 ### 拒绝策略接口RejectedExecutionHandler
