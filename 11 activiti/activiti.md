@@ -311,6 +311,26 @@ actityBehavior实现了当流转到此节点时对应的处理逻辑.
     - SequenceFlow
     - ExculsiveGateway
 
+## 流程生命周期
+
+部署 -> 启动 -> 调度 -〉 结束
+
+UserTask这么启动起来
+
+## 流程操作
+
+启动
+
+结束
+
+暂停
+
+继续
+
+重试
+
+跳过
+
 
 
 ## 遗留问题
@@ -322,7 +342,11 @@ actityBehavior实现了当流转到此节点时对应的处理逻辑.
 当我们将serviceTask 设置 async = "true" (关于 isExclusive 后续会提到) 的时候，流程引擎采用JobExecutor 来异步执行，执行顺序为引擎首先会将该任务实例化一条job记录，插act_ru_job表，然后JobExecutor 扫描该表并加锁执行该job，
 ```
 
+- 事务的可见性、事务传播导致的问题。
 
+- 流程中启动流程，ThreadLocal导致的问题。
+
+  
 
 ## 参考：
 

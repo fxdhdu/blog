@@ -41,7 +41,7 @@ NIO（Nonblocking I/O，非阻塞IO）：NIO的单线程能处理连接的数量
 
 通道是数据来源或数据写入的目的地
 
-![](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/channel.png)
+![](./assert/channel.png)
 
 - FileChannel：文件通道，用于文件的读和写
 - DatagramChannel：用于 UDP 连接的接收和发送
@@ -54,7 +54,7 @@ NIO（Nonblocking I/O，非阻塞IO）：NIO的单线程能处理连接的数量
 
 一个 Buffer 本质上是内存中的一块，我们可以将数据写入这块内存，之后从这块内存获取数据。
 
-![](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/6.png)
+![](./assert/6.png)
 
 
 
