@@ -1,0 +1,3 @@
+了解AQS内部实现、及依靠AQS的同步类比如ReentrantLock、Semaphore、CountDownLatch、CyclicBarrier等的实现
+
+AQS是如何唤醒下一个线程的？

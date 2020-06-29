@@ -4,7 +4,7 @@
 
 ## Java集合框架
 
-![](./assert/675536edf1563b11ab7ead0def1215c7.png)
+![](../assert/675536edf1563b11ab7ead0def1215c7.png)
 
 集合的根Collection
 
@@ -58,11 +58,11 @@ public class Stack<E> extends Vector<E> {
 
 #### ArrayList
 
-ArrayList基于数组实现，是一个动态的数组队列。但是它和Java中的数组又不一样，它的容量可以自动增长，类似于C语言中动态申请内存，动态增长内存！
+ArrayList基于数组实现，是一个容量可以自动增长的动态的数组队列。
 
-- 非线程安全
 - 动态数组：顺序存储、随机访问（实现RandomAccess接口）；元素后移
 - 扩容：50%
+- 非线程安全
 
 ```java
 public class ArrayList<E> extends AbstractList<E>
@@ -129,7 +129,7 @@ public class ArrayList<E> extends AbstractList<E>
 
 #### LinkedList
 
-- LinkedList是基于链表实现的，从源码可以看出是一个双向链表。除了当做链表使用外，它也可以被当作堆栈、队列或双端队列进行操作。不是线程安全的，继承AbstractSequentialList实现List、Deque、Cloneable、Serializable。
+LinkedList是基于链表实现的，数据存储在双向链表中。除了当做链表使用外，它也可以被当作堆栈、队列或双端队列进行操作。不是线程安全的，继承AbstractSequentialList实现List、Deque、Cloneable、Serializable。
 
 ```java
 public class LinkedList<E>
@@ -191,6 +191,24 @@ ArrayList和LinkedList是Java集合框架下，列表（不是链表，链表是
 ### Set
 
 #### TreeMap
+
+存储结构
+
+```java
+    
+		private transient Entry<K,V> root;
+
+		static final class Entry<K,V> implements Map.Entry<K,V> {
+        K key;
+        V value;
+        Entry<K,V> left;
+        Entry<K,V> right;
+        Entry<K,V> parent;
+        boolean color = BLACK;
+    }
+```
+
+
 
 #### TreeSet
 

@@ -78,7 +78,14 @@ public class ReentrantLock implements Lock, java.io.Serializable {
 }
 ```
 
+### ReentrantLock如何实现公平和非公平锁是如何实现？
+
+
+
+
+
 ## 性能比较
+
 - 低竞争场景
 - 高竞争场景
 
@@ -92,6 +99,8 @@ public class ReentrantLock implements Lock, java.io.Serializable {
   - 原子性：同步机制
   - 可见性：volatile，线程本地状态反应到主内存上
   - 有序性：保证线程内串行语义，避免指令重排序
+
+
 
 
 

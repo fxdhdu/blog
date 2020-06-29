@@ -38,45 +38,38 @@
 
 ### HashMap
 
-- java 7（Entry） 
+#### java 7
 
-- java 8（Node/TreeNode） 数组/链表/红黑树
+- 数据存储结构（Entry） 数组/链表
 
-​	HashMap内部数据是以散列表的方式进行存储的。散列表table是一个实现了Entry接口的Node数组。每一个Node（Entry）存储了key，key的hash值和value值。以及一个Node单向链表。
+#### java 8
 
-​	当往HashMap中添加元素时，首先计算key的hash值。key为null时，hash值为0，key非空时，调用key的hashcode方法计算得到h，然后h无符号（>>>）右移16位，与其自身异或，得到最终的hash值。
+- 数据存储结构 （Node/TreeNode） 数组/单向链表/红黑树
+- put方法 （常数时间复杂度；非同步方法，多线程下不安全（可能会死循环？））
+  - 元素哈希值计算`(key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16); `支持null键、值`
+  - 初始化（lazy-load原则，put方法中初始化而不是在构造函数中）
+  - 元素存储存放下标计算`(n - 1) & hash`
+  - “拉链法”解决哈希冲突
+  - 重复Key值判断
+  - 树化
+    - 阈值：`static final int TREEIFY_THRESHOLD = 8;` final类型不可修改
+  - 扩容
+    - 阈值：容量 * 负载因子，put元素时size超过阈值则扩容。
+    - 容量：原来的2倍
+    - 数据迁移
+    - 重新计算下标
+- get方法（常数时间复杂度）
+- 构造函数
+  - 负载因子：默认为0.75f
+  - 容量：始终保持2的幂数、默认初始化容量16。可以扩容，扩容后数组大小为当前的 2 倍。
+    - 2的幂可以使散列更加均匀(结合下标计算方法考虑，2^n -1 二进制各个位都为1)
+    - 2的幂可以使扩容时，通过位判断来确定是否需要重新计算下标
 
-​	如果table为null或长度为0，则resize（）扩容；
-
-​		创建新的大数组，迁移数据
-
-​	计算下标 (n - 1) & hash （取hash值的低几位），如果下表下没有链表，则newNode（）
 
 
+#### HashMap源码阅读
 
-判断重复的key
-
-
-
-
-
-![](./assert/11C6FC37-CD47-4412-8BC3-E7CFCBE3594C.png)
-
-- 非同步，线程不安全
-- 支持null键、值
-- put、get常数时间性能
-- 内部实现基本点
-- - 数组（桶、哈希值寻址）、链表、链表的阈值
-  - lazy-load原则、put方法中初始化
-  - resize：初始化、扩容
-- 容量：始终保持2的幂数、默认初始化容量16。可以扩容，扩容后数组大小为当前的 2 倍。
-- 负载因子：默认为0.75f
-- 扩容阈值：容量 * 负载因子
-- 树化改造
-
-### HashMap源码阅读
-
-### 创建测试代码
+创建测试代码
 
 ```java
 import java.util.HashMap;
@@ -106,7 +99,7 @@ public class HashMapStudy {
 }
 ```
 
-![image-20200605002920940](./assert/image-20200605002920940.png)
+![image-20200605002920940](../assert/image-20200605002920940.png)
 
 ```java
 public class HashMap<K,V> extends AbstractMap<K,V>
@@ -216,9 +209,11 @@ public class HashMap<K,V> extends AbstractMap<K,V>
 
 
 
-### LinkedHashMap(有序)
+### LinkedHashMap(有序，HashMap + 双向链表)
 
 - 遍历顺序符合插入顺序
+  - 掉用put方法的顺序
+- 遍历顺序符合访问顺序
 
 
 ```java
@@ -226,10 +221,21 @@ public class LinkedHashMap<K,V>
     extends HashMap<K,V>
     implements Map<K,V>
 {
+		final boolean accessOrder;
   
+    static class Entry<K,V> extends HashMap.Node<K,V> {
+        Entry<K,V> before, after;
+        Entry(int hash, K key, V value, Node<K,V> next) {
+            super(hash, key, value, next);
+        }
+    }  
   
 }
 ```
+
+[图解LinkedHashMap原理](https://www.jianshu.com/p/8f4f58b4b8ab)
+
+
 
 
 
@@ -243,7 +249,7 @@ public class LinkedHashMap<K,V>
 
 ## ConcurrentHashMap
 
-java并发包中，线程安全的HashMap实现。
+ConcurrentHashMap是java并发包中，线程安全的HashMap实现。
 
 ### Java7
 
@@ -255,9 +261,15 @@ ConcurrentHashMap 是一个 Segment 数组，Segment 通过继承 ReentrantLock 
 
 ### Java8
 
-结构上与HashMap基本一样。
+- 存储结构上与HashMap基本一样。
+- put方法
+  - CAS
+  - synchronized：获取Node数组该位置的头结点的监视器锁
+    - 并发上限
+  - 扩容
+    - put方法帮助迁移数据
 
-![4](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/Java8ConcurrentHashMap结构.png)
+![4](../assert/Java8ConcurrentHashMap结构.png)
 
 ```java
 public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
@@ -293,10 +305,6 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
 ```
 
 
-
-CAS
-
-synchronized：获取Node数组该位置的头结点的监视器锁
 
 ## hashCode和equals的基本约定
 

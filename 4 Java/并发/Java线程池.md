@@ -111,6 +111,8 @@ public ThreadPoolExecutor(int corePoolSize,
 
 ## 线程池源码分析、实现原理（JDK 1.8）
 
+### 说一说往线程池里提交一个任务会发生什么？
+
 - ctl变量
 
   对线程池的运行状态和池子中有效线程的数量进行控制.

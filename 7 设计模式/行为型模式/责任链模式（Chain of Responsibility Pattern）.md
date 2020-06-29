@@ -11,15 +11,11 @@
 
 **应用**
 
-1、activiti中使用了职责链模式，构造了命令拦截器链，用于在命令真正被执行之前做一系列操作。
-
-CommandInterceptor
-
-AbstractCommandInterceptor
-
-LogInterceptor
-
-2、spring aop 拦截器
+1. activiti中使用了职责链模式，构造了命令拦截器链，用于在命令真正被执行之前做一系列操作。
+2. spring aop 拦截器
+3. Servlet Filter 的 Filter 和 FilterChain。递归来实现拦截方法前后添加逻辑（在一个doFilter中实现双向拦截？）
+4. Spring Interceptor 的HandlerInterceptor 和 HandlerExecutionChain。把拦截方法前后要添加的逻辑放到两个方法中实现
+5. MyBatis Plugin 的 Interceptor 和 InterceptorChain。采用嵌套动态代理的方法来实现
 
 ## 参考	
 

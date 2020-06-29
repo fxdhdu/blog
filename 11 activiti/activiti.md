@@ -2,13 +2,34 @@
 
 [TOC]
 
-## Activiti基础编程框架
+## 引言
+
+工作流引擎，应用于解决流程审批和流程编排方面等问题，有效的提供了扩展性的支撑。而目前来说，工作流领域也有了相对通行化的标准规范，也就是BPMN2.0。支持这个规范的开源引擎主要有：Activiti，flowable，Jbpm4等。
+
+## Activiti架构
+
+网上找的一些分层架构图
 
 
 
 ![img](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/bfc57552-9d60-3483-9577-3503688de2d4.png)
 
-### ProcessEngine
+![img](/Users/fanxudong/IdeaProjects/blog/11 activiti/asset/20190214113258.png)
+
+大致包括：
+
+- 核心接口层，被PVM接口定义。
+- 核心实现层，基于PVM的思想和接口，定义了一些关键实体。
+  - ActivityImpl（该类抽象了节点实现）
+  - FlowElementBehavior实现（该类抽象了节点指令动作）
+  - ExecutionImpl（流程执行实体类）
+- 命令层，Activiti在编码模式上直接限定整体风格为命令模式。也就是将业务逻辑封装为一个个的Command接口实现类。这样新增一个业务功能时只需要新增一个Command实现即可。这里需要特别提到的是，命令本身需要运行在命令上下文中，也就是CommandContext类对象。
+- 命令拦截层，采用责任链模式，通过责任链模式的拦截器层，为命令的执行创造条件。诸如开启事务，创建CommandContext上下文，记录日志等
+- 业务接口层，面向业务，提供了各种接口。这部分的接口就不再面向框架开发者了，而是面向框架的使用者。
+- 部署层，严格来说，这个与上面说到的并不是一个完整的分层体系。但是为了突出重要性，单独拿出来说。流程运转的前提是流程定义。而流程定义解析就是一切的开始。从领域语言解析为Java的POJO对象依靠的就是部署层。
+- 流程引擎，所有接口的总入口。上面提到的业务接口层，部署层都可以从流程引擎类中得到。因此这里的流程引擎接口其实类似门面模式，只作为提供入口。
+
+### ProcessEngine（流程引擎）
 
 1. ProcessEngine是所有Activiti引擎功能的中心入口。
 2. 定义Activiti流程引擎的配置文件，利用Spring的解析和依赖注入功能来构建**引擎**。
@@ -16,7 +37,7 @@
 4. SpringProcessEngineConfiguration实现了ApplicationContextAware接口，在唯一的接口方法setApplicationContext中，获取spring容器。
 5. 当把数据源（DataSource）传递给 SpringProcessEngineConfiguration （使用"dataSource"属性）之后，Activiti内部使用了一个org.springframework.jdbc.datasource.**TransactionAwareDataSourceProxy**代理来封装传递进来的数据源（DataSource）。 这样做是为了确保从数据源（DataSource）获取的SQL连接能够与Spring的事物结合在一起发挥得更出色。这意味它不再需要在你的Spring配置中**代理数据源**（dataSource）了。
 
-### 流程引擎初始化
+#### 流程引擎初始化
 
 org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl类的init()，Activiti工作流引擎的初始化。 
 
@@ -151,7 +172,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
 
 - AcquireAsyncJobsDueRunnable中会去数据库中查询成功锁定的JobEntity任务。并放到线程池中执行任务。
 
-### activiti暴露的接口
+### 业务接口层
 
 #### RuntimeService
 
@@ -227,7 +248,7 @@ runtimeService.suspendProcessInstanceById(instance.getProcessInstanceId());
 
 #### managementService
 
-### 持久层
+### 领域模型（持久层）
 
 在org.activiti.engine.impl.db.DbSqlSession中封装了org.apache.ibatis.session.SqlSession（mybatis）进行数据库操作
 
@@ -239,40 +260,64 @@ runtimeService.suspendProcessInstanceById(instance.getProcessInstanceId());
 4. Task：任务，在Activiti中的Task仅指有角色参与的任务，即定义中的UserTask。 
 5. Execution：执行计划，流程实例和流程执行中的所有节点都是Execution，如UserTask、ServiceTask等。
 
-## 开发模式
+
+
+#### 表关系
+
+在创建流程后会在流程数据库中插入一条ExecutionEntity数据，在act_ru_execution表中可以看到这个execution的id和proc_inst_id的值是一样的
+
+![D27F86F5-3D32-49FC-8EA0-96ED4030CACA](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/D27F86F5-3D32-49FC-8EA0-96ED4030CACA.png)
+
+
+
+
+### 命令模式
 
 > 1）一个产品或者一个项目，从技术上必须有一个明确的、唯一的开发模型或者叫开发样式（真不知道怎么说恰当），我们常说希望一个团队的所有人写出的代码都有统一的风格，都像是一个人写出来的，很理想化，但做到很难，往往我们都是通过“规范”去约束大家这样做，而规范毕竟是程序之外的东西，主观性很强，不遵守规范的情况屡屡发生。而如果架构师给出了明确的开发模型，并使用一些基础组件加以强化，把程序员要走的路规定清楚，那你想不遵守规范都会很难，因为那意味着你写的东西没发工作。就像Activiti做的这样，明确以Command作为基本开发模型，辅之以Event-Listener，这样编程风格的整体性得到了保证。
 >
 > 2）使用命令模式的好处，我这里体会最深的就是 职责分离，解耦。有了Command，各个Service从角色上说只是一些协调者或者控制者，他不需要知道具体怎么做，他只是把任务交给了各个命令。直接的好处是臃肿的、万能的大类没有了。而这往往是我们平时开发中最深恶痛绝的地方。
 
-### 命令模式
+Activiti使用命令模式作为基础开发模式。将命令进行封装，发出命令（命令执行内容的实现）和执行命令（真正执行命令）分离。增加CommandExecutor来执行命令，同时使用职责链模式对命令进行记录、事务处理等。
 
-Activiti使用命令模式作为基础开发模式.
+重点需要关注的类
 
-将命令进行封装，发出命令（命令执行内容的实现）和执行命令（真正执行命令）分离。
-
-增加CommandExecutor来执行命令，同时使用职责链模式对命令进行记录、事务处理等。
-
-开发activiti功能时，自己写Command！然后扔给CommandExecutor()了事！
+- `Command`命令接口，所有的具体命令都需要实现该类，最终业务就是执行该类的execute方法。
+- `CommandContext`命令上下文，为具体命令的执行提供上下文支撑。该上下文的生成是依靠命令拦截器中的上下文拦截器`org.activiti.engine.impl.interceptor.CommandContextInterceptor`来生成的。该拦截器会判断是复用当前的上下文还是生成新的上下文。
+- CommandExecutor：执行命令。开发activiti功能时，自己写Command，然后扔给CommandExecutor了事。
 
 ### 责任链模式
 
 activiti定义了一个拦截器链，链上的每个拦截器都有个next，会一直next执行下去。以CompleteTaskCmd为例，拦截器链为：
 
-1. LogInterceptor：使用slf4j
-2. TransactionInterceptor：项目中使用SpringTransactionInterceptor事务拦截器（使用Spring事务模板TransactionTemplate执行之后的操作，设置事务传播）
-3. CommandContextInterceptor：创建命令上下文Context，即设置ThreadLocal变量。CommandContext关闭时，持久化数据，即执行context.close()方法时，调用session.flush()，真正执行完成数据库操作（提交事务）。
-4. CommandInvoker：执行命令
+![img](/Users/fanxudong/IdeaProjects/blog/11 activiti/asset/20191221235530.png)
 
-自定义拦截器配置
+#### customPreCommandInterceptors（自定义前置拦截器）
 
-customPreCommandInterceptors
+实现自定义的命令拦截器AbstractCommandInterceptor
 
-customPostCommandInterceptors
+#### LogInterceptor（日志拦截器）
 
-实现自定义的命令拦截器
+使用slf4j
 
-AbstractCommandInterceptor
+#### TransactionInterceptor（事务拦截器）
+
+事务拦截器是否提供取决于`org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl`的子类对方法`createTransactionInterceptor`的实现。独立使用时的`org.activiti.engine.impl.cfg.StandaloneProcessEngineConfiguration`该方法返回为空。也就是不提供事务拦截器。此时，命令的运行就无法通过事务拦截器来提供事务环境了。
+
+项目中使用SpringTransactionInterceptor事务拦截器（使用Spring事务模板TransactionTemplate执行之后的操作，设置事务传播属性）
+
+#### CommandContextInterceptor（命令上下文拦截器）
+
+创建命令上下文Context，或则复用当前上下文（设置ThreadLocal变量）。
+
+CommandContext关闭时，持久化数据，即执行context.close()方法时，调用session.flush()，真正执行完成数据库操作（提交事务）。
+
+CommandContext包含了本次操作中涉及到所有的数据对象。
+
+#### customPostCommandInterceptors（自定义后置拦截器）
+
+
+
+#### CommandInvoker：执行命令
 
 
 
@@ -292,13 +337,6 @@ actityBehavior实现了当流转到此节点时对应的处理逻辑.
 
 如果是异步的就在调度线程池中拿到线程执行，否则就在当前线程内执行
 
-
-
-## 表关系
-
-在创建流程后会在流程数据库中插入一条ExecutionEntity数据，在act_ru_execution表中可以看到这个execution的id和proc_inst_id的值是一样的
-
-![D27F86F5-3D32-49FC-8EA0-96ED4030CACA](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/D27F86F5-3D32-49FC-8EA0-96ED4030CACA.png)
 
 ## bpmn模型
 
@@ -361,4 +399,6 @@ UserTask这么启动起来
 [activiti学习笔记3--20170327-Job Executor and Async Executor](https://blog.csdn.net/silent_zqy/article/details/67073439)
 
 [activiti乐观锁与死锁](https://my.oschina.net/xiehui/blog/140704)
+
+[Activiti架构分析及源码详解](https://www.cnblogs.com/jfire/p/12078847.html)
 
