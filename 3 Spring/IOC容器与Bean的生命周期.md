@@ -141,7 +141,15 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 
 
 
+## BeanFactoryPostProcessor
 
+BeanFactory后置处理器，是对BeanDefinition对象进行修改。（BeanDefinition：存储bean标签的信息，用来生成bean实例）
+
+
+
+## BeanPostProcessor
+
+Bean后置处理器，是对生成的Bean对象进行修改。
 
 
 

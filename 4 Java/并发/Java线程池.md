@@ -59,13 +59,13 @@ public ThreadPoolExecutor(int corePoolSize,
 
 
 
-### 线程池一般定多大，创建多少线程合适？
+### 线程池一般定多大，创建多少线程合适？ （CPU + I/O 或 CPU密集型）
 
 ### （tomcat线程池、jdbc线程池）
 
--  I/O 密集型计算
+- CPU 密集型
 
-  我们的程序一般都是 CPU 计算和 I/O 操作交叉执行的，由于 I/O 设备的速度相对于 CPU 来说都很慢，所以大部分情况下，I/O 操作执行的时间相对于 CPU 计算来说都非常长。
+  CPU 密集型计算大部分场景下都是纯 CPU 计算。
 
   理论上：
 
@@ -82,25 +82,26 @@ public ThreadPoolExecutor(int corePoolSize,
   ```
 
   这样的话，当线程因为偶尔的内存页失效或其他原因导致阻塞时，这个额外的线程可以顶上，从而保证 CPU 的利用率。
-
-- CPU 密集型
-
-  CPU 密集型计算大部分场景下都是纯 CPU 计算。
-
+  
+- I/O 密集型计算
+  
+  
+  我们的程序一般都是 CPU 计算和 I/O 操作交叉执行的，由于 I/O 设备的速度相对于 CPU 来说都很慢，所以大部分情况下，I/O 操作执行的时间相对于 CPU 计算来说都非常长。
+  
   单核：
-
+  
   ```
   最佳线程数 = 1 +（I/O 耗时 / CPU 耗时）
   ```
-
+  
   我们令 R=I/O 耗时 / CPU 耗时，可以这样理解：当线程 A 执行 IO 操作时，另外 R 个线程正好执行完各自的 CPU 计算。这样 CPU 的利用率就达到了 100%。
-
+  
   多核：
-
+  
   ```
   最佳线程数 = CPU 核数 * [ 1 +（I/O 耗时 / CPU 耗时）]
   ```
-
+  
   ![img](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/98b71b72f01baf5f0968c7c3a2102fcb.png)
 
 
