@@ -2,7 +2,7 @@
 
 ## 通用的线程生命周期（五态）
 
-![通用线程状态转换图——五态模型](./assert/9bbc6fa7fb4d631484aa953626cf6ae5.png)
+![通用线程状态转换图——五态模型](../assert/9bbc6fa7fb4d631484aa953626cf6ae5.png)
 
 
 1. 初始状态
@@ -86,9 +86,9 @@
   2. 调用stop()方法直接杀死线程，线程不会释放锁。（@Deprecated）
   3. 调用线程的interrupt()方法，通知线程中断。线程抛出InterruptedException异常，或者通过调用isInterrupted()方法检测通知。
 
-![线程状态转换](./assert/949937DB-1B3C-4A43-BBC8-9FDC88E504EF.png)
+![线程状态转换](../assert/949937DB-1B3C-4A43-BBC8-9FDC88E504EF.png)
 
-![](./assert/3169b7ca899afeb0359f132fb77c29dc.png)
+![](../assert/3169b7ca899afeb0359f132fb77c29dc.png)
 
 ## 执行new Thread，代码做了什么？
 
