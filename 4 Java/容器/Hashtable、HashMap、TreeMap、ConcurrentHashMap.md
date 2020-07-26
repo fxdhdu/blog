@@ -351,7 +351,7 @@ public native int hashCode();
    
 ### 相关编程规范
 
-![](./assert/8ECBE9B8-702E-47DE-B590-479A46FC8916.png)
+![](../assert/8ECBE9B8-702E-47DE-B590-479A46FC8916.png)
 
 
 
