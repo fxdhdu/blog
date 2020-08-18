@@ -175,3 +175,6 @@ zstd 压缩（建议）
 [Kafka核心技术与实战](https://time.geekbang.org/column/intro/100029201)
 
 [《Apache Kafka 源码剖析》](https://book.douban.com/subject/27038473/)
+
+[kafka：简介、使用场景、设计原理、主要配置及集群搭建](https://www.cnblogs.com/likehua/p/3999538.html)
+

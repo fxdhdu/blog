@@ -1,11 +1,74 @@
+
+
+## 参考
+
+[Java编程思想 （第4版）](https://book.douban.com/subject/2130190/)
+
+
+
 FileWriter：线程安全write
 
-File
+
+
+## File类
+
+File类（文件类），它既能代表一个特定文件的名称，又能代表一个目录下的一组文件的名称。
+
+**常见方法**
+
+构造函数
+
+判断文件是否存在
+
+检查目录
+
+创建目录
+
+写入
+
+读取
+
+
+
+## 流
+
+流代表任何有能力产出数据的<u>**数据源对象**</u>或者是有能力接收数据的<u>**接收端对象**</u>。流屏蔽了实际I/O设备中处理数据的细节。
+
+**可能的数据源**
+
+1. 字节数组
+2. String对象
+3. 文件（用File类表示）
+4. 管道
+5. 其他的流
+6. 其他数据源，如Internet连接等
+
+从流中读取数据FilterInputStream
+
+向流写入数据FilterOutPutStream
+
+### Java I/O类实现
+
+### 类层次结构
 
 |        | 字节流       | 字符流 |
 | ------ | ------------ | ------ |
 | 输入流 | InputStream  | Reader |
 | 输出流 | OutputStream | Writer |
+
+### 装饰器模式
+
+叠合多个对象来提供所期望的功能。
+
+
+
+
+
+## RandomAccessFile
+
+
+
+### 用Java IO读取、写入一个文件？
 
 
 
@@ -19,27 +82,19 @@ File
 
 非阻塞：轮询
 
-
-
-## java.io 基于流模型实现，交互方式是同步、阻塞
-
-BIO（Blocking I/O，阻塞IO）
-
-File 抽象
-
-输入输出流
-
- java.net
+### 
 
 
 
-## java.nio 多路复用的、同步非阻塞
+## NIO
+
+多路复用的、同步非阻塞
 
 NIO（Nonblocking I/O，非阻塞IO）：NIO的单线程能处理连接的数量比BIO要高出很多
 
 ### Channel
 
-通道是数据来源或数据写入的目的地
+通道是数据来源或数据写入的目的地。（和流有什么区别？）
 
 ![](./assert/channel.png)
 
@@ -78,10 +133,6 @@ mark
 
 ## NIO 2 异步非阻塞，基于事件和回调机制
 
-
-
-
-
 基础 API 功能与设计， InputStream/OutputStream 和 Reader/Writer 的关系和区别。
 
 NIO、NIO 2 的基本组成。
@@ -94,5 +145,6 @@ NIO 提供的高性能数据操作方式是基于什么原理，如何使用？
 
 
 
-## 参考
+## 序列化
 
+序列化后对象的大小

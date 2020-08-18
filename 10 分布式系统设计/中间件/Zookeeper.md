@@ -10,7 +10,7 @@
 
 ## 基本概念
 
-Paxos，分布式数据一致性解决方案。原语，TCP长连接
+Paxos，分布式数据一致性解决方案。原语，
 
 - ZooKeeper集群下机器节点的角色
   - Leader
@@ -22,9 +22,13 @@ Paxos，分布式数据一致性解决方案。原语，TCP长连接
   - 临时节点
   - 持久有序节点
   - 临时有序节点
+  
 - 会话（Session）
+
 - 版本（Znode上的stat数据结构）
+
 - Watcher（事件监听器）
+
 - ACL策略（Access Control Lists权限控制）下的5种权限
   - CREATE
   - READ
@@ -49,7 +53,10 @@ Paxos，分布式数据一致性解决方案。原语，TCP长连接
   
 
 - 事务编号Zxid
+
 - epoch
+
+- ZooKeeper中client与server通过TCP长连接进行通行。使用TCP长连接后无论是否传输数据，连接都会保持，减少了3次握手和4次挥手的开销。ZooKeeper能够使用长连接是因为，通常一个client只与一个server保持连接，无论多么平凡的数据交互，都只要一个长连接即可。TCP协议通过保活定时器（Keepalive Timer）保持长连接。[ZooKeeper的会话机制Session](https://blog.csdn.net/muerhuoxu/article/details/86218115)
 
 ## ZooKeeper典型应用场景
 
@@ -68,9 +75,9 @@ Paxos，分布式数据一致性解决方案。原语，TCP长连接
   - 释放锁：同排他锁
   - 解决羊群效应：客户端只关注比自己序号小的那个相关节点的变更情况
 
+### Kafka中的使用
 
-
-
+保存原数据
 
 ## ZooKeeper的使用
 
