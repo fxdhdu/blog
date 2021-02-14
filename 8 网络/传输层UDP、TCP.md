@@ -192,6 +192,35 @@ TCP管理的4个定时器
 | 拥塞控制                                                     | （勇往直前）               |
 | 有状态（包头中有状态位）                                     | 无状态                     |
 
+## TCP状态转换图/有限状态机
+
+ ![image-20210214162303723](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/image-20210214162303723.png)
+
+![image-20210214162234912](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/image-20210214162234912.png)
+
+## TIME_WAIT状态
+
+TIME_WAIT状态也称为2MSL等待状态。在该状态中，TCP将会等待两倍于最大段生存期（MSL）的时间。当TCP执行一个主动关闭并发送最终的ACK时，连接处于TIME_WAIT状态。
+
+为什么要等待2MSL:
+
+1. 当被动关闭方由于没有收到FIN的ACK确认而重传FIN时，能够让主动关闭方重新发送最终的ACK。如果主动关闭方直接进入CLOSED状态则不行。
+2. 当TCP处于TIME_WAIT状态时，通信双方将该连接定义为不可重新使用（客户服务器的ip地址和端口）。当连接处于2MSL等待状态时，任何延迟到达的报文段都将被丢弃。
+
+
+
+
+
+![image-20210214164139871](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/image-20210214164139871.png)
+
+
+
+## 与TCP连接管理相关的攻击
+
+SYN泛洪是一种TCP拒绝服务攻击，恶意客户端产生一些列TCP连接尝试，即三次握手建立连接时，客户端主动发起的SYN报文段。服务器会为每一条连接分配一定数量的连接资源。由于连接尚未完全建立，服务 器为了维护大量的半打开连接会在耗尽自身内存后拒绝为后续的合法连接请求服务。
+
+![image-20210214160336828](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/image-20210214160336828.png)
+
 
 
 ## 
@@ -208,4 +237,6 @@ TCP管理的4个定时器
 [第10讲 | UDP协议：因性善而简单，难免碰到“城会玩”](https://time.geekbang.org/column/article/8924?utm_source=pinpaizhuanqu&utm_medium=geektime&utm_campaign=guanwang&utm_term=guanwang&utm_content=0511)
 
 《TCP/IP详解 卷1:协议》
+
+[ImportNew 把TCP/IP讲绝了！](https://mp.weixin.qq.com/s/3KPCJcyrMAObUq42unQMrg)
 

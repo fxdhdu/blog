@@ -6,20 +6,34 @@
 
 - 线程池是一种生产者 - 消费者模式
   生产者：线程池使用方
-任务队列、阻塞队列（队列满时，插入操作会阻塞。队列空时，获取元素操作会阻塞）
-消费者：线程池
+  消费者：线程池
 
-
+  任务队列、阻塞队列（队列满时，插入操作会阻塞。队列空时，获取元素操作会阻塞
 
 - 为什么要使用多线程？
   提升程序性能，降低延迟，提高吞吐量。在并发编程领域，提升性能本质上就是提升硬件的利用率，再具体点来说，就是提升 I/O 的利用率和 CPU 的利用率。解决 CPU 和 I/O 设备综合利用率问题，将硬件的性能发挥到极致。
-
-
 
 - 多线程的应用场景
   要想“降低延迟，提高吞吐量”，对应的方法呢，基本上有两个方向：
 优化算法，（算法范畴）
 将硬件（I/O， CPU）的性能发挥到极致。（并发编程）
+
+
+
+【强制】线程资源必须通过线程池提供，不允许在应用中自行显式创建线程。
+使用线程池的好处是减少在创建和销毁线程上所消耗的时间以及系统资源的开销，解决资源不足的问题。如果不使用线程池，有可能造成系统创建大量同类线程而导致消耗完内存或者“过度切换”的问题。
+
+
+
+【强制】线程池不允许使用 Executors 去创建，而是通过 ThreadPoolExecutor 的方式，这样
+的处理方式让写的同学更加明确线程池的运行规则，规避资源耗尽的风险。
+说明：Executors 返回的线程池对象的弊端如下： 
+
+1）FixedThreadPool 和 SingleThreadPool:
+允许的请求队列长度为 Integer.MAX_VALUE，可能会堆积大量的请求，从而导致 OOM。 
+
+2）CachedThreadPool 和 ScheduledThreadPool:
+允许的创建线程数量为 Integer.MAX_VALUE，可能会创建大量的线程，从而导致 OOM。
 
 
 
@@ -114,7 +128,7 @@ public ThreadPoolExecutor(int corePoolSize,
 
 ### 说一说往线程池里提交一个任务会发生什么？
 
-- ctl变量
+- ctl变量(private final AtomicInteger ctl = new AtomicInteger(ctlOf(RUNNING, 0));
 
   对线程池的运行状态和池子中有效线程的数量进行控制.
 
@@ -197,7 +211,7 @@ rs、wc、c之间的转换
 
 创建corePoolSize个线程 -》 阻塞队列塞满 -> 创建到maximumPoolSize个线程 -》执行拒绝策略
 
-1. 如果线程池内的有效线程数少于核心线程数 corePoolSize, 那么就创建并启动一个线程来执行新提交的任务.
+1. 如果线程池内的有效线程数少于核心线程数 corePoolSize, 那么就创建并启动一个线程来执行新提交的任务.（可调用xx方法预先启动核心线程）
 2. 如果线程池内的有效线程数达到了核心线程数 corePoolSize, 并且线程池内的阻塞队列未满, 那么就将新提交的任务加入到该阻塞队列中.
 3. 如果线程池内的有效线程数达到了核心线程数 corePoolSize 但却小于最大线程数 maximumPoolSize, 并且线程池内的阻塞队列已满, 那么就创建并启动一个线程来执行新提交的任务.
 4. 如果线程池内的有效线程数达到了最大线程数 maximumPoolSize, 并且线程池内的阻塞队列已满, 那么就让 RejectedExecutionHandler 根据它的拒绝策略来处理该任务, 默认的处理方式是直接抛异常.
@@ -238,4 +252,8 @@ rs、wc、c之间的转换
 [10 | Java线程（中）：创建多少线程才是合适的？](https://time.geekbang.org/column/article/86666)
 
 [Java 线程池 ThreadPoolExecutor 源码分析](http://blog.csdn.net/clevergump/article/details/50688008)
+
+[线程池中的适配器模式](https://www.cnblogs.com/xichji/p/11793382.html)
+
+[线程池中线程是如何知道自己达到keepAliveTime时间，然后销毁的？](https://blog.csdn.net/Killua11111/article/details/100118672?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-1.not_use_machine_learn_pai&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-1.not_use_machine_learn_pai)
 

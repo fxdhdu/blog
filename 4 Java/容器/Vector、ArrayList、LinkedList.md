@@ -186,7 +186,9 @@ ArrayList和LinkedList是Java集合框架下，列表（不是链表，链表是
 | 访问     | get方法随机访问                              | get方法顺序访问        |
 | 插入删除 | 顺序存储，直接在数组末尾插入。数组满时扩容。 | 可在链表头部或尾部插入 |
 
+![å¨è¿éæå¥å¾çæè¿°](https://img-blog.csdnimg.cn/20190109164948676.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5ODk5MDg3,size_16,color_FFFFFF,t_70)
 
+https://blog.csdn.net/binbigdata/article/details/92805197
 
 ### Set
 

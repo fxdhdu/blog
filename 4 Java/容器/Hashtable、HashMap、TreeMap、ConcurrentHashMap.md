@@ -4,7 +4,7 @@
 
 ### HashTable
 
-- 不支持null键、值
+HashTable对元素的操作是线程安全的，其put、get等方法都加了synchronized关键字。不支持null键、值，传入null时会抛出空指针异常。
 
 ```java
     public synchronized V put(K key, V value) {
@@ -32,20 +32,20 @@
     }
 ```
 
-- 对元素的操作是线程安全的，方法都加了synchronized。
-
-
-
 ### HashMap
 
-#### java 7
+【背】
 
-- 数据存储结构（Entry） 数组/链表
+java中的HashMap，内部数据存储结构，在Java8与Java7中略有不同。
+
+Java7中为数组 + 链表的方式存储数据。即元素存储在一个Entry数组中，而每个Entry为一个单向链表。Java8中为了降低在链表上查找数据的开销，当链表中元素达到8个时，将链表(Node)转换成红黑树(TreeNode)。使查找的复杂度从O(n)降为O(logn)
+
+HashMap在调用构造函数时，设置容量和负载因子。容量用来初始化数组的大小，默认值为16，负载因子默认值为0.75f。容量 * 负载因子即为HashMap的阈值，表示能够存放元素的个数，当存放的元素超出阈值时，HashMap会发生扩容。容量始终保持2的幂数，当用户提供的容量大小不是2的幂时，构造函数中会调用tableSizeFor方法，将传入容量向上取最近的2的n次方。扩容时容量为原来的2倍。HashMap这么做，一方面是为了使散列更加均匀 （存储下标计算为（n-1）& hash），另一方面是为了扩容迁移链表元素时，可以方便的通过hash值的位判断来确定是否需要重新计算下标，把链表分为low和high两个链表，low链表下标不变，high链表。
+
+HashMap首次调用put方法时，会通过resize方法初始化数组。后续每次执行put方法时，先计算key的hash值，然后根据公式（n-1）& hash 计算元素存放的下标，此时如果没有发生hash冲突则直接放在数组下标元素位置。如果发生冲突需要判断是否为同一个元素，同一个元素需要根据onlyIfAbsent判断是否需要覆盖元素。不存在相同元素则将新元素放入链表中或插入红黑树中。元素插入后，判断是否容量超过阈值，超过则调用resize进行扩容。 
 
 #### java 8
 
-- 基于数组下标随机访问数据的特性
-- 数据存储结构 （Node/TreeNode） 数组/单向链表/红黑树
 - 构造函数
   - 负载因子：默认为0.75f
   - 容量：始终保持2的幂数、默认初始化容量16。可以扩容，扩容后数组大小为当前的 2 倍。
@@ -64,43 +64,7 @@
     - 容量：原来的2倍
     - 数据迁移
     - 重新计算下标
-- get方法（常数时间复杂度）
-
-
-
-#### HashMap源码阅读
-
-创建测试代码
-
-```java
-import java.util.HashMap;
-import java.util.Map;
-
-public class HashMapStudy {
-
-    public static void main(String[] args) {
-        // HashMap 初始化
-        // 初始化 loadFactor（负载因子）。使用默认值 DEFAULT_LOAD_FACTOR = 0.75f 。
-        // 初始化 threshold（阈值），执行resize需要达到的大小 capacity * load factor。
-        // threshold的值本身不是capacity * load factor计算锁得？
-        HashMap<Integer, Integer> map = new HashMap<>(8);
-
-        // 插入元素
-        for (int i = 0; i < 8; i++) {
-            // 根据Key计算Hash值。
-            map.put(i, i);
-        }
-
-        // 取出元素
-        map.get(1);
-
-        // 扩容
-        map.put(9, 9);
-    }
-}
-```
-
-![image-20200605002920940](../assert/image-20200605002920940.png)
+- get方法（基于数组下标随机访问数据的特性，常数时间复杂度）
 
 ```java
 public class HashMap<K,V> extends AbstractMap<K,V>
@@ -212,9 +176,15 @@ public class HashMap<K,V> extends AbstractMap<K,V>
 
 ### LinkedHashMap(有序，HashMap + 双向链表)
 
-- 遍历顺序符合插入顺序
-  - 掉用put方法的顺序
-- 遍历顺序符合访问顺序
+LinkedHashMap数据存储是有序的，accessOrder=true，表示按访问顺序排序，accessOrder=false，表示按插入顺序排序即调用put方法的顺序
+
+LinkedHashMap将HashMap中的Node结构扩展为双向链表。并覆盖了HashMap中的newNode方法。因此在创建新节点时，会将新节点连接到双向链表末尾。
+
+如果是以访问顺序排序，则get一个节点以后，会把此节点移动到双向链表末尾。
+
+LinkedHashMap中，实现了afterNodeInsertion方法，在新元素put之后支持删除eldestentry。因此可以用LinkedHashMap实现LRU缓存。
+
+
 
 
 ```java
@@ -223,6 +193,10 @@ public class LinkedHashMap<K,V>
     implements Map<K,V>
 {
 		final boolean accessOrder;
+  
+    transient LinkedHashMap.Entry<K,V> head;
+
+    transient LinkedHashMap.Entry<K,V> tail;
   
     static class Entry<K,V> extends HashMap.Node<K,V> {
         Entry<K,V> before, after;
@@ -252,23 +226,31 @@ public class LinkedHashMap<K,V>
 
 ConcurrentHashMap是java并发包中，线程安全的HashMap实现。
 
-### Java7
-
-分段锁Segment。
-
-ConcurrentHashMap 是一个 Segment 数组，Segment 通过继承 ReentrantLock 来进行加锁，所以每次需要加锁的操作锁住的是一个 segment，这样只要保证每个 Segment 是线程安全的，也就实现了全局的线程安全。
+在Java7中ConcurrentHashMap通过分段锁思想实现线程安全。数据是以一个 Segment 数组，Segment 通过继承 ReentrantLock 来进行加锁，所以每次需要加锁的操作锁住的是一个 segment，这样只要保证每个 Segment 是线程安全的，也就实现了全局的线程安全。
 
 多少个Segment，理论上就支持最多多少个线程并发写入。
 
-### Java8
+在Java8中ConcurrentHashMap存储结构上与HashMap基本一样，使用数组+链表/红黑树。
 
-- 存储结构上与HashMap基本一样。
-- put方法
-  - CAS
-  - synchronized：获取Node数组该位置的头结点的监视器锁
-    - 并发上限
-  - 扩容
-    - put方法帮助迁移数据
+ConcurrentHashMap初始化方法中的并发问题是通过对 sizeCtl 进行一个 CAS 操作来控制的。sizeCtl < 0表示有其他现在在进行初始化，调用Thread.yield()，进行自旋。否则通过CAS操作将sizeCtl设置为-1，CAS成功则对Node数组进行初始化
+
+put方法中，通过一个for循环放入新值。如果数组对应下标位置为空，则用CAS操作将新值放入数组，如果成功则break循环，如果失败，表示有并发操作，则进入下一个循环。如果数组对应下标位置中有元素，且hash值为MOVED，则表示正在进行扩容，调用helpTransfer方法帮助迁移数据。 否则使用synchronized锁住数组该位置的头节点（并发上限和数组大小有关），将新节点插入链表或红黑树。
+
+ConcurrentHashMap 树化方法treeifyBin，不一定就会进行红黑树转换，也可能是仅仅做数组扩容。数组长度>=64时进行树化。树化要通过synchronized对头节点加锁。
+
+扩容
+
+数据迁移
+
+stride步长，表示当前线程需要迁移的hash桶的数目。
+
+transferIndex标识数组上hash桶的迁移工作已经进行到哪个位置。
+
+sizeCtl 用于记录当前并发扩容的线程数量。
+
+用来安排哪个线程执行哪个任务，将大的迁移任务分成一个个任务包。
+
+[ConcurrentHashMap的transfer](https://blog.csdn.net/luzhensmart/article/details/105968886)
 
 ![4](../assert/Java8ConcurrentHashMap结构.png)
 
@@ -302,6 +284,27 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
         this.sizeCtl = cap;
     }  
   
+      static class Node<K,V> implements Map.Entry<K,V> {
+        final int hash;
+        final K key;
+        volatile V val;
+        volatile Node<K,V> next;
+    }
+  
+    static final class TreeNode<K,V> extends Node<K,V> {
+        TreeNode<K,V> parent;  // red-black tree links
+        TreeNode<K,V> left;
+        TreeNode<K,V> right;
+        TreeNode<K,V> prev;    // needed to unlink next upon deletion
+        boolean red;
+    }
+
+    /**
+     * A node inserted at head of bins during transfer operations.
+     */
+    static final class ForwardingNode<K,V> extends Node<K,V> {
+        final Node<K,V>[] nextTable;
+    }
 }
 ```
 
@@ -366,3 +369,6 @@ public native int hashCode();
 [Java7/8 中的 HashMap 和 ConcurrentHashMap 全解析](https://www.javadoop.com/post/hashmap)
 
 [20 | 散列表（下）：为什么散列表和链表经常会一起使用？](https://time.geekbang.org/column/article/64858)
+
+[安琪拉](https://mp.weixin.qq.com/s/oRx-8XXbgage9Hf97WrDQQ)
+

@@ -1,5 +1,3 @@
-
-
 HTTP 协议是基于 TCP
 
 
@@ -22,14 +20,6 @@ HTTP 协议是基于 TCP
 
 
 ## HTTP方法/使用规范
-
-GET
-
-
-
-POST
-
-
 
 
 
