@@ -22,13 +22,13 @@
 
 排序数据：order by 子句
 
-按多个列排序：order by prod_price, prod_name;
+按多个列排序：order by prod_price, prod_name; 排序按所规定的列进行，先排序prod_price再排序prod_name
 
 指定排序方向：
 
 ​	order by prod_price desc;    desc关键字降序，默认升序asc
 
-​	order by prod_price desc, prod_name;
+​	order by prod_price desc, prod_name;    多列排序，需要对每个列单独制定desc
 
 ​	order by prod_price desc limit 1 找最高
 
@@ -98,7 +98,7 @@ like操作符
 
 ​	rtrim() 函数去掉右边空格，trim()去掉左边的空格
 
-使用别名 ：as关键字
+使用别名 ：as关键字，可以对表和字段使用，当一个from中有两个相同的表时，可以使用别名对他们进行区别。
 
 执行算术计算：
 
@@ -212,7 +212,7 @@ select子句顺序
 
 ​	**order** **by** vend_name, prod_name;
 
-​	where子句对表进行联结，第一个表的每一行与第二个表中的每一行配对，where子句过滤匹配的行。
+​	使用from联结表时，用where子句对表进行联结，第一个表的每一行与第二个表中的每一行配对，where子句过滤匹配的行。
 
 ​	没有联结条件的表关系返回的结果为笛卡尔积。检索出的行的数目将是第一个表中的行数乘以第二个表中的行数。
 
@@ -223,7 +223,7 @@ select子句顺序
 ​	**inner** **join** products **on** vendors.vend_id = products.vend_id;
 
 INNER JOIN 两边表同时有对应的数据，即任何一边缺失数据就不显示。
-LEFT JOIN 会读取左边数据表的全部数据，即便右边表无对应数据。
+LEFT JOIN 会读取左边数据表的全部数据，即便右边表无对应数据。(可以使用is null来获取左边表不在右边表的行)
 RIGHT JOIN 会读取右边数据表的全部数据，即便左边表无对应数据。
 
 可以联结多个表。当需要employees.emp_no非空也输出时，需要全用left join，否则会在后面某个join把空数据过滤掉。
@@ -231,3 +231,21 @@ RIGHT JOIN 会读取右边数据表的全部数据，即便左边表无对应数
 select employees.last_name, employees.first_name, departments.dept_name from employees 
 left join dept_emp on employees.emp_no = dept_emp.emp_no
 left join departments on dept_emp.dept_no = departments.dept_no
+
+
+
+
+
+## 牛客上比较难的SQL题
+
+1. 对所有员工的薪水按照salary进：
+
+   对所有员工的薪水按照salary进行按照1-N的排名，相同salary并列且按照emp_no升序排列。
+
+   select s1.emp_no, s1.salary, **count(distinct s2.salary)**    #使用distinct的话，使排名连续。
+
+   from salaries s1, salaries s2 where s1.salary <= s2.salary  # 这个联结使本题的精髓
+   **group by s1.emp_no**   # group by以后才能进行count计算
+   order by s1.salary desc, s1.emp_no;   #多列排序
+
+   
