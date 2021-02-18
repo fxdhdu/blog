@@ -58,7 +58,9 @@ public class Stack<E> extends Vector<E> {
 
 #### ArrayList
 
-ArrayList基于数组实现，是一个容量可以自动增长的动态的数组队列。
+ArrayList底层基于数组（Object[] elementData）实现，是一个容量可自动增长的动态的数组队列。
+
+ArrayList的add操作，支持元素顺序存储，其内部记录了一个size变量，表示数组中元素的个数，同时新元素也可以直接放在size表示的下标中 。 get操作支持随机访问元素。
 
 - 动态数组：顺序存储、随机访问（实现RandomAccess接口）；元素后移
 - 扩容：50%

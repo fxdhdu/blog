@@ -226,13 +226,39 @@ INNER JOIN 两边表同时有对应的数据，即任何一边缺失数据就不
 LEFT JOIN 会读取左边数据表的全部数据，即便右边表无对应数据。(可以使用is null来获取左边表不在右边表的行)
 RIGHT JOIN 会读取右边数据表的全部数据，即便左边表无对应数据。
 
-可以联结多个表。当需要employees.emp_no非空也输出时，需要全用left join，否则会在后面某个join把空数据过滤掉。
+
+
+1、可以联结多个表。当需要employees.emp_no非空也输出时，需要全用left join，否则会在后面某个join把空数据过滤掉。
 
 select employees.last_name, employees.first_name, departments.dept_name from employees 
 left join dept_emp on employees.emp_no = dept_emp.emp_no
 left join departments on dept_emp.dept_no = departments.dept_no
 
+2、 获取员工其当前的薪水比其manager当前薪水还高的相关信息(SQL25): 连接salaries表两次，一次为员工工资，一次为主管工资。
 
+
+
+## 插入数据
+
+数据插入
+
+​	insert ignore into actor values () 插入时如果主键已存在则忽略。
+
+插入完整的行
+
+插入多个行： insert into customers() values(), (); 单条insert插入多行能够提高性能。
+
+
+
+## 创建和操纵表
+
+表创建基础
+
+create table customers (cust_id int not null, cust_name char(50) null, pricemary key (cust_id)) ENGINE=InnoDB
+
+if not exists 表名不存在时才创建。
+
+使用NULL值：create表语句中，可以指定列允许NULL值或不允许NULL值（NULL或NOT NULL）。NULL值表示没有值，空串是有效值，不是NULL值。
 
 
 

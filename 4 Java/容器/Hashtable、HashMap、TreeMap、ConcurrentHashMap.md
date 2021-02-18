@@ -42,7 +42,9 @@ Java7中为数组 + 链表的方式存储数据。即元素存储在一个Entry�
 
 HashMap在调用构造函数时，设置容量和负载因子。容量用来初始化数组的大小，默认值为16，负载因子默认值为0.75f。容量 * 负载因子即为HashMap的阈值，表示能够存放元素的个数，当存放的元素超出阈值时，HashMap会发生扩容。容量始终保持2的幂数，当用户提供的容量大小不是2的幂时，构造函数中会调用tableSizeFor方法，将传入容量向上取最近的2的n次方。扩容时容量为原来的2倍。HashMap这么做，一方面是为了使散列更加均匀 （存储下标计算为（n-1）& hash），另一方面是为了扩容迁移链表元素时，可以方便的通过hash值的位判断来确定是否需要重新计算下标，把链表分为low和high两个链表，low链表下标不变，high链表。
 
-HashMap首次调用put方法时，会通过resize方法初始化数组。后续每次执行put方法时，先计算key的hash值，然后根据公式（n-1）& hash 计算元素存放的下标，此时如果没有发生hash冲突则直接放在数组下标元素位置。如果发生冲突需要判断是否为同一个元素，同一个元素需要根据onlyIfAbsent判断是否需要覆盖元素。不存在相同元素则将新元素放入链表中或插入红黑树中。元素插入后，判断是否容量超过阈值，超过则调用resize进行扩容。 
+HashMap首次调用put方法时，会通过resize方法初始化数组。后续每次执行put方法时，先计算key的hash值，然后根据公式（n-1）& hash 计算元素存放的下标，此时如果没有发生hash冲突则直接在数组下标位置创建新节点。如果发生冲突需要判断是否为同一个元素，同一个元素需要根据onlyIfAbsent判断是否需要覆盖元素。不存在相同元素则将新元素放入链表中或插入红黑树中。元素插入后，判断是否容量超过阈值(++size > threshold)，超过则调用resize进行扩容。 
+
+HashMap扩容时，首先重新计算容量和阈值，通常新容量为老容量的2倍（oldTab.length << 1），新阈值为新容量 * 负载因子。然后以新容量大小创建数组。再将老数组中的数据迁移到新数组中。迁移过程中遍历老数组，如果数组中元素是单个节点，则根据新容量大小计算下标后，直接将元素放入新数组中。如果数组中元素是个链表（节点个数大于1），则根据链表中元素的hash值 & 老容量是否为0或1，将链表拆成两个链表放入新数组，原下标，原下标+老容量的位置。
 
 #### java 8
 
@@ -225,30 +227,18 @@ public class LinkedHashMap<K,V>
 ## ConcurrentHashMap
 
 ConcurrentHashMap是java并发包中，线程安全的HashMap实现。
+在Java7中ConcurrentHashMap通过分段锁思想实现线程安全。数据是以一个 Segment 数组，Segment 通过继承 ReentrantLock 来进行加锁，所以每次需要加锁的操作锁住的是一个 segment，这样只要保证每个 Segment 是线程安全的，也就实现了全局的线程安全。有多少个Segment，理论上就支持最多多少个线程并发写入。
 
-在Java7中ConcurrentHashMap通过分段锁思想实现线程安全。数据是以一个 Segment 数组，Segment 通过继承 ReentrantLock 来进行加锁，所以每次需要加锁的操作锁住的是一个 segment，这样只要保证每个 Segment 是线程安全的，也就实现了全局的线程安全。
+在Java8中ConcurrentHashMap存储结构上与Java8中的HashMap基本一样，使用数组+链表/红黑树。
+ConcurrentHashMap初始化方法中的并发问题是通过，对 sizeCtl 进行一个 CAS 操作来控制的。sizeCtl < 0表示有其他线程正在进行初始化操作，则当前线程调用Thread.yield()，让出cpu进行自旋。否则通过CAS操作将sizeCtl设置为-1，CAS成功则对Node数组进行初始化。
 
-多少个Segment，理论上就支持最多多少个线程并发写入。
-
-在Java8中ConcurrentHashMap存储结构上与HashMap基本一样，使用数组+链表/红黑树。
-
-ConcurrentHashMap初始化方法中的并发问题是通过对 sizeCtl 进行一个 CAS 操作来控制的。sizeCtl < 0表示有其他现在在进行初始化，调用Thread.yield()，进行自旋。否则通过CAS操作将sizeCtl设置为-1，CAS成功则对Node数组进行初始化
-
-put方法中，通过一个for循环放入新值。如果数组对应下标位置为空，则用CAS操作将新值放入数组，如果成功则break循环，如果失败，表示有并发操作，则进入下一个循环。如果数组对应下标位置中有元素，且hash值为MOVED，则表示正在进行扩容，调用helpTransfer方法帮助迁移数据。 否则使用synchronized锁住数组该位置的头节点（并发上限和数组大小有关），将新节点插入链表或红黑树。
-
+put方法中，通过一个for循环放入新值。如果数组对应下标位置为空，则用CAS操作将新值放入数组，如果成功则break循环，如果失败，表示有并发操作，则进入下一个循环，继续CAS操作直到成功。如果数组对应下标位置中有元素，且hash值为MOVED，则表示正在进行扩容，调用helpTransfer方法帮助迁移数据。 否则使用synchronized锁住数组该位置的头节点（并发上限和数组大小有关），将新节点插入链表或红黑树。
 ConcurrentHashMap 树化方法treeifyBin，不一定就会进行红黑树转换，也可能是仅仅做数组扩容。数组长度>=64时进行树化。树化要通过synchronized对头节点加锁。
 
-扩容
-
-数据迁移
-
+ConcurrentHashMap扩容时，通过stride、transferIndex来对数据迁移任务进行拆分和分配。
 stride步长，表示当前线程需要迁移的hash桶的数目。
-
 transferIndex标识数组上hash桶的迁移工作已经进行到哪个位置。
-
 sizeCtl 用于记录当前并发扩容的线程数量。
-
-用来安排哪个线程执行哪个任务，将大的迁移任务分成一个个任务包。
 
 [ConcurrentHashMap的transfer](https://blog.csdn.net/luzhensmart/article/details/105968886)
 
