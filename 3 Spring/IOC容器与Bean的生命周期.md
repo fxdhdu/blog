@@ -165,7 +165,55 @@ Bean后置处理器，是对生成的Bean对象进行修改。
 
 
 
+Spring循环依赖
+
+1. 构造器循环依赖：Spring无法解决，会抛出BeanCurrentlyInCreationException异常表示循环依赖。
+2. setter循环依赖：Spring容器提前暴露刚完成构造器注入但未完成其他步骤（如setter注入）的bean来完成的，而且只能解决单例作用域的bean循环依赖。通过提前暴露一个单例工厂方法（ObjectFactory），从而使其他bean能引用到该bean
+3. prototype范围的依赖处理：Spring容器无法完成依赖注入，因为Spring容器不进行缓存“prototype”作用域的bean，因此无法提前暴露一个创建中的bean
+
+
+
+- doCreateBean
+  - remove
+  - createBeanInstance
+    - 工厂方法
+    - 构造函数
+  - applyMergedBeanDefinitionPostProcessors
+  - addSingletonFactory
+  - populateBean
+  - initializeBean
+  - getSingleton
+  - registerDisposableBeanIfNecessary (destroy-method)
+
+
+
+Bean的五个作用域
+
+作用域影响Bean的生命周期和创建方式
+
+## singleton（Bean的默认作用域）
+
+无状态或者状态不可变的类
+
+## prototype
+
+
+
+## request
+
+
+
+## session
+
+
+
+## globalSession
+
+
+
 **参考：**
 
 [Spring IOC 容器源码分析](https://www.javadoop.com/post/spring-ioc) 
+
+[一文告诉你Spring是如何利用“三级缓存“巧妙解决Bean的循环依赖问题的【享学Spring】](https://blog.csdn.net/f641385712/article/details/92801300?biz_id=102&utm_term=spring%20%E4%B8%89%E7%BA%A7%E7%BC%93%E5%AD%98&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-0-92801300&spm=1018.2118.3001.4187)
 
