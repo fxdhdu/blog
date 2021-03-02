@@ -22,6 +22,6 @@ Nginx怎么启动TLS
 
 
 
-HTTP Cookie是一种用来在客户端保存少量数据的扩展机制。服务器通过使用Set-Cookie响应头来创建Cookie。服务器为每个Cookie指定制定一对名称和值，以及描述其作用范围和生命周期的元数据。客户端在cookie-jar中存储Cookie，对于每个HTTP事务，客户端在它们的cookie-jar中查找Cookie，并在Cookie HTTP请求头中将它们提交给服务器。
+HTTP Cookie是一种用来在客户端保存少量数据的扩展机制。服务器通过使用Set-Cookie响应头来创建Cookie。服务器为每个Cookie指定一对名称和值，以及描述其作用范围和生命周期的元数据。客户端在cookie-jar中存储Cookie，对于每个HTTP事务，客户端在它们的cookie-jar中查找Cookie，并将Cookie放在HTTP请求头中将它们提交给服务器。
 
 ![image-20210216121718709](./asset/image-20210216121718709.png)

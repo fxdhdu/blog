@@ -49,7 +49,7 @@ MySQL服务器3层逻辑架构图：服务器层（连接器包括在server层�
 - A：原子性(Atomicity)：通过undo log回滚日志实现，undo log记录数据被修改前的信息，即修改前表的字段值，当发生错误或者执行rollback操作时，用于回滚操作，保障未提交事务的原子性。事务开始后，每次数据变更都伴随着undo log的产生，undo log会先于数据持久化到磁盘上。
 - C：一致性(Consistency)：原子性、隔离性、持久性最后是为了保证一致性。
 - I：隔离性(Isolation)：通过读写锁和MVCC来实现的，MVCC又依赖undo log和read view。锁和MVCC的实现在后面说。
-- D：持久性(Durability)：通过redo log重做日志实现，redo log记录数据被修改后的信息（？？记录的具体是啥），当数据库异常重启时，用来恢复数据，保障已提交事务的持久性。redo log包括重做日志缓冲redo log buffer和重做日志文件redo log两部分，后台线程从redo log buffer同步数据到redo log即磁盘上。redo log为顺序存储，I/O效率高。mysql表数据存在磁盘上，innodb为了提升性能提供了缓存池buffer pool，读数据先读缓存，没有则从数据库读后放入磁盘。写输入先写缓存，缓存定期同步到磁盘。修改表数据时只修改内存，修改行为记录到磁盘上的事务日志（redo log？），事务日志采用追加方式写入，即使用顺序I/O加快机械磁盘写入效率。
+- D：持久性(Durability)：通过redo log重做日志实现，redo log记录数据被修改后的信息（？？记录的具体是啥），当数据库异常重启时，用来恢复数据，保障已提交事务的持久性。redo log包括重做日志缓冲redo log buffer和重做日志文件redo log两部分，后台线程从redo log buffer同步数据到redo log即磁盘上。redo log为顺序存储，I/O效率高。mysql表数据存在磁盘上，innodb为了提升性能提供了缓存池buffer pool，读数据先读缓存，没有则从数据库读后放入缓存。写输入先写缓存，缓存定期同步到磁盘。修改表数据时只修改内存，修改行为记录到磁盘上的事务日志（redo log？），事务日志采用追加方式写入，即使用顺序I/O加快机械磁盘写入效率。
 
 
 
