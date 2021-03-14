@@ -13,13 +13,13 @@
 Paxos，分布式数据一致性解决方案。原语，
 
 - ZooKeeper集群下机器节点的角色
-  - Leader
-  - Follower
-  - Observer
+  - Leader：为客户端提供读写服务
+  - Follower：提供读服务
+  - Observer：提供读服务
 
 - 数据节点Znode的四种类型
-  - 持久节点
-  - 临时节点
+  - 持久节点：只能通过delete来进行删除
+  - 临时节点：创建该节点的客户端崩溃或关闭了与zk的连接时，节点删除。（会话超时删除、主动关闭删除、主动删除3中删除方式）
   - 持久有序节点
   - 临时有序节点
   
@@ -27,7 +27,7 @@ Paxos，分布式数据一致性解决方案。原语，
 
 - 版本（Znode上的stat数据结构）
 
-- Watcher（事件监听器）
+- Watcher（事件监听器）：基于通知机制代替客户端的轮询，客户端向zk注册需要接收通知的znode，通过对znode设置监视点来接收通知。
 
 - ACL策略（Access Control Lists权限控制）下的5种权限
   - CREATE
@@ -35,6 +35,11 @@ Paxos，分布式数据一致性解决方案。原语，
   - WRITE
   - DELETE
   - ADMIN
+
+
+## ZAB协议
+
+zk atomic 广播协议，zk集群中的数据一致性通过zab协议来保证
 
 - ZAB协议的两种模式
 
@@ -52,34 +57,34 @@ Paxos，分布式数据一致性解决方案。原语，
 
   
 
-- 事务编号Zxid
+- 事务编号Zxid：zk为每个请求分配一个全局唯一的递增编号
 
 - epoch
 
-- ZooKeeper中client与server通过TCP长连接进行通行。使用TCP长连接后无论是否传输数据，连接都会保持，减少了3次握手和4次挥手的开销。ZooKeeper能够使用长连接是因为，通常一个client只与一个server保持连接，无论多么平凡的数据交互，都只要一个长连接即可。TCP协议通过保活定时器（Keepalive Timer）保持长连接。[ZooKeeper的会话机制Session](https://blog.csdn.net/muerhuoxu/article/details/86218115)
+
+## ZooKeeper服务器的运行模式
+
+独立模式
+
+仲裁模式
+
+## ZooKeeper的会话机制
+
+ZooKeeper中client与server通过TCP长连接进行通行。使用TCP长连接后无论是否传输数据，连接都会保持，减少了3次握手和4次挥手的开销。ZooKeeper能够使用长连接是因为，通常一个client只与一个server保持连接（客户端只打开一个会话），无论多么平凡的数据交互，都只要一个长连接即可。客户端的请求将全部以FIFO顺序执行。TCP协议通过保活定时器（Keepalive Timer）保持长连接。[ZooKeeper的会话机制Session](https://blog.csdn.net/muerhuoxu/article/details/86218115)
 
 ## ZooKeeper典型应用场景
 
 ### 分布式锁
 
-![image-20200802144910821](/Users/fanxudong/IdeaProjects/blog/10 分布式系统设计/asset/image-20200802144910821.png)
-
-- 排他锁（Exclusive Locks，X锁，写锁，独占锁）
-  - 定义锁：ZK上的数据节点表示一个锁
-  - 获取锁：客户端通过调用create接口创建节点，创建成功则获取到锁。没有获取到锁的客户端在父节点注册Watcher监听
-  - 释放锁：1）临时节点会在客户端宕机时释放。2）业务正常执行完后，客户端主动删除
-
-- 共享锁（Shared Locks，S锁，读锁）
-  - 定义锁：ZK上的数据节点，路径为 业务信息-请求类型-序号
-  - 获取锁：读写请求分别创建对应请求类型的节点
-  - 释放锁：同排他锁
-  - 解决羊群效应：客户端只关注比自己序号小的那个相关节点的变更情况
-
 ### Kafka中的使用
 
-保存原数据
+保存原数据，检测崩溃，实现topic的发现
 
-## ZooKeeper的使用
+### 作为dubbo的注册中心。
+
+
+
+## ZooKeeper实践
 
 ### Mac下zk的单点模式安装
 

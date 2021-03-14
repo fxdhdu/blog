@@ -14,17 +14,7 @@
 
 
 
-## 其他实践
 
-java_pid3708.hprof：Sun, HP, SAP 所采用的 HPROF 二进制堆存储文件（Heap Dump）
-
-
-
-- 发生内存泄露时抓拍下当时的内存状态
-
--XX:+HeapDumpOnOutOfMemoryError 
-
--XX:HeapDumpPath=${CATALINA_HOME}/logs JVM 
 
 
 
