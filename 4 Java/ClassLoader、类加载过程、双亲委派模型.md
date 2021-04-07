@@ -85,3 +85,5 @@ public abstract class ClassLoader {
 ## 参考
 
 《精通 Spring 4.x 企业应用开发实战》
+
+[类加载机制](https://github.com/CyC2018/CS-Notes/blob/master/notes/Java%20%E8%99%9A%E6%8B%9F%E6%9C%BA.md#%E5%9B%9B%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6)

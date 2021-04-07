@@ -1,4 +1,4 @@
-## Spring事务传播机制
+## Spring事务传播机制、隔离级别
 
 spring通过事务传播行为控制当前的事务，如何传播到被嵌套调用的目标服务接口方法中。spring在transactionDefinition接口中规定了7中类型的事务传播行为。它们规定了事务方法和事务方法发生嵌套调用时事务如何进行传播。
 
@@ -9,6 +9,30 @@ spring通过事务传播行为控制当前的事务，如何传播到被嵌套�
 
 
 Spring事务的实现机制：spring事务也是基于数据库事务，通过jdbc来实现的。
+
+
+
+TransactionDefinition接口中定义了5种隔离级别。4种和数据库一致。还有一种是ISOLATION_DEFAULT，表示使用数据库默认的隔离级别。
+
+```java
+public interface TransactionDefinition {
+	  int PROPAGATION_REQUIRED = 0; // 支持当前事务；如果不存在，则创建新事务。
+  	int PROPAGATION_SUPPORTS = 1; // 支持当前事务；如果不存在事务，则以非事务方式执行。
+  	int PROPAGATION_MANDATORY = 2; //支持当前事务；如果不存在当前事务，则抛出异常。
+  	int PROPAGATION_REQUIRES_NEW = 3; // 创建一个新事务，如果已存在事务则挂起
+	  int PROPAGATION_NOT_SUPPORTED = 4; // 不支持当前事务，以非事务执行
+	  int PROPAGATION_NEVER = 5;         // 不支持当前事务，如果有当前事务则抛出异常
+	  int PROPAGATION_NESTED = 6;        // 如果当前存在事务，则在嵌套事务内执行。如果当前没有事务，则进行与PROPAGATION_REQUIRED类似的操作。
+
+  	int ISOLATION_DEFAULT = -1;   // 使用数据库默认的隔离级别。
+  	int ISOLATION_READ_UNCOMMITTED = Connection.TRANSACTION_READ_UNCOMMITTED;
+  	int ISOLATION_READ_COMMITTED = Connection.TRANSACTION_READ_COMMITTED;
+  	int ISOLATION_REPEATABLE_READ = Connection.TRANSACTION_REPEATABLE_READ;
+  	int ISOLATION_SERIALIZABLE = Connection.TRANSACTION_SERIALIZABLE;
+
+  	int TIMEOUT_DEFAULT = -1;
+}
+```
 
 
 

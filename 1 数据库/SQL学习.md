@@ -8,7 +8,7 @@
 
 检索所有列： *
 
-检索不同的行： distinct
+检索不同的行： **distinct**
 
 限制结果：limit 5   limit 1, 1  limit 4 offset 3, (从第3行开始的4行，行下标从0开始。也就是说忽略前3行，从第四行开始返回4行。)
 
@@ -17,6 +17,12 @@
 ​	select products.prod_name from products;
 
 ​	select products.prod_name from crashcourse.products;
+
+强制使用索引
+
+```sql
+select * from salaries force index (idx_emp_no) where emp_no = 10005;
+```
 
 
 
@@ -109,6 +115,20 @@ like操作符
 ​	算术运算符： + - * /  也支持取余数%
 
 ​	select 3 * 2；
+
+使用条件表达式：[获取有奖金的员工相关信息](https://www.nowcoder.com/practice/5cdbf1dcbe8d4c689020b6b2743820bf?tpId=82&tqId=29827&rp=1&ru=%2Factivity%2Foj&qru=%2Fta%2Fsql%2Fquestion-ranking&tab=answerKey)
+
+```sql
+select e.emp_no, e.first_name, e.last_name, b.btype, s.salary, 
+(case b.btype
+when 1 then s.salary * 0.1
+when 2 then s.salary * 0.2
+else s.salary * 0.3 end) as bonus
+from employees e
+inner join emp_bonus b on e.emp_no = b.emp_no
+inner join salaries s on b.emp_no = s.emp_no
+where s.to_date = '9999-01-01';
+```
 
 
 
@@ -264,6 +284,12 @@ if not exists 表名不存在时才创建。
 
 使用NULL值：create表语句中，可以指定列允许NULL值或不允许NULL值（NULL或NOT NULL）。NULL值表示没有值，空串是有效值，不是NULL值。
 
+更新表
+
+```sql
+alter table actor add column create_date datetime NOT NULL default '2020-10-01 00:00:00';
+```
+
 
 
 ## 牛客上比较难的SQL题
@@ -278,4 +304,6 @@ if not exists 表名不存在时才创建。
    **group by s1.emp_no**   # group by以后才能进行count计算
    order by s1.salary desc, s1.emp_no;   #多列排序
 
-   
+2. 计算每个日期的新用户数。
+
+ 
