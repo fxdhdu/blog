@@ -1,3 +1,9 @@
+[TOC]
+
+## Spring中这么来开启事务
+
+
+
 ## Spring事务传播机制、隔离级别
 
 spring通过事务传播行为控制当前的事务，如何传播到被嵌套调用的目标服务接口方法中。spring在transactionDefinition接口中规定了7中类型的事务传播行为。它们规定了事务方法和事务方法发生嵌套调用时事务如何进行传播。
@@ -44,7 +50,7 @@ public interface TransactionDefinition {
 
 ## 事务实现源码
 
-事务控制是通过aop加在service层上的
+事务控制是通过aop加在service层上的，而aop底层又是通过jdk动态代理和cglib动态代理实现的。注解事务不生效的场景和jdk动态代理、cglib动态代理的实现有关。
 
 
 

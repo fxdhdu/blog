@@ -16,13 +16,13 @@
 ## Java 中线程的生命周期（六态）
 
 1. NEW（初始化状态）
-2. RUNNABLE（可运行 / 运行状态）：对五态模型进行合并。
+2. RUNNABLE（可运行 / 运行状态）：对五态模型进行合并。可以被CPU调度的一种状态。
 3. BLOCKED（阻塞状态）：线程在等待 Monitor lock。3，4，5对五态模型中的***休眠状态***进行了细化。这3种状态没有CPU使用权。
 4. WAITING（无时限等待）
 5. TIMED_WAITING（有时限等待）
 6. TERMINATED（终止状态）
 
-![3f6c6bf95a6e8627bdf3cb621bbb7f8c](./assert/3f6c6bf95a6e8627bdf3cb621bbb7f8c.png)
+![3f6c6bf95a6e8627bdf3cb621bbb7f8c](../assert/3f6c6bf95a6e8627bdf3cb621bbb7f8c.png)
 
 可在Thread类中查看Java线程的6种状态
 ```java
@@ -65,14 +65,15 @@
   
   
 - RUNNABLE 与 WAITING 的状态转换
-  1. 获得 synchronized 隐式锁的线程，调用无参数的 Object.wait() 方法。**（锁是否释放？）**
-  2. 调用无参数的 Thread.join() 方法。
+  1. 获得 synchronized 隐式锁的线程，调用无参数的 Object.wait() 方法。**（synchronized锁住了Object对象，调用wait时释放Object的对象锁，当前线程进入对象的等待池中）**
+  2. 调用无参数的 Thread.join() 方法。阻塞调用Thread.join()的线程进入WAITING状态，等待Thread线程结束。
   3. 调用 LockSupport.park()、LockSupport.unpark(Thread thread) 方法。
+  4. Object.notify()、Object.notifyAll()，唤醒当前对象上的等待线程。（也必须在synchronized中使用）
   
   
   
 - RUNNABLE 与 TIMED_WAITING 的状态转换
-  1. 调用带超时参数的 Thread.sleep(long millis) 方法；**（锁是否释放？）**
+  1. 调用带超时参数的 Thread.sleep(long millis) 方法；**（因为sleep是Thread中的方法，所以它无法释放synchronized锁住的Object对象）**
   2. 获得 synchronized 隐式锁的线程，调用带超时参数的 Object.wait(long timeout) 方法；
   3. 调用带超时参数的 Thread.join(long millis) 方法；
   4. 调用带超时参数的 LockSupport.parkNanos(Object blocker, long deadline) 方法；
@@ -85,6 +86,10 @@
   1. 线程正常或异常执行结束
   2. 调用stop()方法直接杀死线程，线程不会释放锁。（@Deprecated）
   3. 调用线程的interrupt()方法，通知线程中断。线程抛出InterruptedException异常，或者通过调用isInterrupted()方法检测通知。
+
+
+
+BLOCKED和WAITING的区别，BLOCKED是阻塞于获取锁，WAITING是已经获取到锁，然后调用wait方法让出锁资源，等待其他出发条件。
 
 ![线程状态转换](../assert/949937DB-1B3C-4A43-BBC8-9FDC88E504EF.png)
 

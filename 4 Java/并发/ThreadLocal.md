@@ -19,7 +19,7 @@ public class ThreadLocal<T> {
   
     static class ThreadLocalMap {
 
-        static class Entry extends WeakReference<ThreadLocal<?>> { // key 为弱引用
+        static class Entry extends WeakReference<ThreadLocal<?>> { // key 为弱引用，ThreadLocal变量为弱引用
             /** The value associated with this ThreadLocal. */
             Object value;
 

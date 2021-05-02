@@ -89,12 +89,32 @@ ZooKeeper中client与server通过TCP长连接进行通行。使用TCP长连接�
 ### Mac下zk的单点模式安装
 
 1. 官网下载tar.gz包：https://www.apache.org/dyn/closer.lua/zookeeper/zookeeper-3.4.14/zookeeper-3.4.14.tar.gz 最好下载3.4.14版本
+
 2. conf目录下添加配置文件zoo.cfg，可以直接拷贝zoo_sample.cfg
-3. 直接启动：zkServer.sh  start
-4. 检查状态：zkServer.sh  status
-5. 使用客户端连接本地zk服务：sh ./zkCli.sh
-6. 常用命令create、ls、get、set、delete
-7. zk的客户端：zkCli.sh、Java原生Api、ZkClient、Curator
+
+3. 直接启动：sh ./zkServer.sh  start
+
+4. 检查状态：sh ./zkServer.sh  status
+
+5. 停止：sh ./zkServer.sh  stop
+
+6. 使用客户端连接本地zk服务：sh ./zkCli.sh
+
+7. 常用命令create、ls、get、set、delete
+
+   查看dubbo路径
+
+   ```shell
+   ls /dubbo
+   ```
+
+   退出
+
+   ```shell
+   quit
+   ```
+
+8. zk的客户端：zkCli.sh、Java原生Api、ZkClient、Curator
 
 
 

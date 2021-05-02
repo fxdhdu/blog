@@ -2,25 +2,7 @@
 
 [TOC]
 
-
-
-- 线程池是一种生产者 - 消费者模式
-  生产者：线程池使用方
-  消费者：线程池
-
-  任务队列、阻塞队列（队列满时，插入操作会阻塞。队列空时，获取元素操作会阻塞
-
-- 为什么要使用多线程？
-  提升程序性能，降低延迟，提高吞吐量。在并发编程领域，提升性能本质上就是提升硬件的利用率，再具体点来说，就是提升 I/O 的利用率和 CPU 的利用率。解决 CPU 和 I/O 设备综合利用率问题，将硬件的性能发挥到极致。
-
-- 多线程的应用场景
-  要想“降低延迟，提高吞吐量”，对应的方法呢，基本上有两个方向：
-优化算法，（算法范畴）
-将硬件（I/O， CPU）的性能发挥到极致。（并发编程）
-
-
-
-## 线程池相关的编程规范
+## 一、线程池相关的编程规范
 
 【强制】线程资源必须通过线程池提供，不允许在应用中自行显式创建线程。
 使用线程池的好处是减少在创建和销毁线程上所消耗的时间以及系统资源的开销，解决资源不足的问题。如果不使用线程池，有可能造成系统创建大量同类线程而导致消耗完内存或者“过度切换”的问题。
@@ -39,8 +21,9 @@
 
 
 
-## 创建线程池参数
+## 二、创建线程池的参数
 
+### 1、ThreadPoolExecutor构造函数中7个参数介绍
 ```java
 public ThreadPoolExecutor(int corePoolSize,
                           int maximumPoolSize,
@@ -64,7 +47,7 @@ public ThreadPoolExecutor(int corePoolSize,
 | threadFactory        | 通过这个参数你可以自定义如何创建线程，例如你可以给线程指定一个有意义的名字。<br>this.thread = getThreadFactory().newThread(this); |
 | handler              | 通过这个参数你可以自定义任务的拒绝策略。如果线程池中所有的线程都在忙碌，并且工作队列也满了（前提是工作队列是有界队列），那么此时提交任务，线程池就会拒绝接收。至于拒绝的策略，你可以通过 handler 这个参数来指定。ThreadPoolExecutor 已经提供了以下 4 种策略。 |
 
-### 拒绝策略接口RejectedExecutionHandler
+### 2、拒绝策略接口RejectedExecutionHandler
 
 | 拒绝策略（实现）    | 描述                                                         |
 | ------------------- | :----------------------------------------------------------- |
@@ -75,34 +58,32 @@ public ThreadPoolExecutor(int corePoolSize,
 
 
 
-### 线程池一般定多大，创建多少线程合适？ （CPU + I/O 或 CPU密集型）
+### 3、线程池一般定多大，创建多少线程合适？ （tomcat线程池多大、jdbc线程池多大）
 
-### （tomcat线程池、jdbc线程池）
+线程池的大小根据我们的应用是CPU密集型还是IO密集型，以及我们机器的CPU核数来确定。
 
-- CPU 密集型
-
-  CPU 密集型计算大部分场景下都是纯 CPU 计算。
+- CPU 密集型的应用，大部分场景下都是纯 CPU 计算。
 
   理论上：
 
   ```
-  线程的数量 = CPU 核数
+线程的数量 = CPU 核数
   ```
-
+  
   再多创建线程也只是增加线程切换的成本。
 
   工程上：
 
   ```
-  线程的数量 = CPU 核数 +1
+线程的数量 = CPU 核数 +1
   ```
-
+  
   这样的话，当线程因为偶尔的内存页失效或其他原因导致阻塞时，这个额外的线程可以顶上，从而保证 CPU 的利用率。
+
+- I/O 密集型的应用
   
-- I/O 密集型计算
   
-  
-  我们的程序一般都是 CPU 计算和 I/O 操作交叉执行的，由于 I/O 设备的速度相对于 CPU 来说都很慢，所以大部分情况下，I/O 操作执行的时间相对于 CPU 计算来说都非常长。
+  我们的程序一般都是 CPU 计算和 I/O 操作（网络IO、磁盘IO）交叉执行的，由于 I/O 设备的速度相对于 CPU 来说都很慢，所以大部分情况下，I/O 操作执行的时间相对于 CPU 计算来说都非常长。
   
   单核：
   
@@ -122,21 +103,41 @@ public ThreadPoolExecutor(int corePoolSize,
 
 
 
-怎么获得I/O 、CPU耗时比例：压测，重点关注 CPU、I/O 设备的利用率和性能指标（响应时间、吞吐量）之间的关系。
+怎么获得I/O 、CPU耗时比例：
+
+通过压测，重点关注虚拟机的 CPU利用率、I/O 设备利用率、系统的性能指标，包括接口响应时间、吞吐量之间的关系。
+
+### 4、生产环境实践
+
+#### 4.1、创建一个IO密集型实时线程池
+
+```java
+new ThreadPoolExecutor(40, 
+                       200,  // 如果IO耗时比较大，则最大线程数设置大一点
+                       120, 
+                       TimeUnit.SECONDS, 
+                       new LinkedBlockQueue<>(10),  // 要保证实时性，工作队列要尽量小
+                       new NamedThreadFactory(),    // 自己实现，用于对线程池中的线程进行命名
+                       new ThreadPoolExecutor.CallerRunsPolicy()) // 提交任务的线程自己去执行该任务。保证任务执行成功。
+```
 
 
 
-## 线程池源码分析、实现原理（JDK 1.8）
+## 三、线程池源码分析、实现原理（JDK 1.8）
 
-### 说一说往线程池里提交一个任务会发生什么？
+### 1、线程池的核心变量
 
-- ctl变量(private final AtomicInteger ctl = new AtomicInteger(ctlOf(RUNNING, 0));
+- ctl变量
 
-  对线程池的运行状态和池子中有效线程的数量进行控制.
+```java
+private final AtomicInteger ctl = new AtomicInteger(ctlOf(RUNNING, 0));
+```
 
-  ctl 变量包含两部分信息: 线程池的运行状态 (runState) 和线程池内有效线程的数量 (workerCount).
+ ctl 变量用于对线程池的运行状态和池子中有效线程的数量进行控制。它包含两部分信息: 
 
-  ctl 的高3位表示线程池的运行状态, 低29位表示线程池内有效线程的数量. 
+线程池的运行状态 (runState) ：由 ctl 的高3位表示
+
+线程池内有效线程的数量 (workerCount)：由 ctl 的低29位表示线程池内有效线程的数量 
 
 - 常用的变量缩写
 
@@ -145,10 +146,6 @@ public ThreadPoolExecutor(int corePoolSize,
   wc：表示线程池中有效线程数量
 
   c：ctl
-
-```java
-    private final AtomicInteger ctl = new AtomicInteger(ctlOf(RUNNING, 0));
-```
 
 rs、wc、c之间的转换
 
@@ -161,7 +158,7 @@ rs、wc、c之间的转换
     private static final int COUNT_MASK = (1 << COUNT_BITS) - 1;
 ```
 
-### 线程池的五种状态（从小到大顺序）
+### 2、线程池的五种状态（从小到大顺序）
 
 ```java
     // runState is stored in the high-order bits
@@ -182,7 +179,7 @@ rs、wc、c之间的转换
 
 <img src="/Users/fanxudong/IdeaProjects/blog/4 Java/assert/image-20200613233849383.png" alt="image-20200613233849383" style="zoom:50%;" />
 
-### execute方法
+### 3、execute方法
 
 ```java
     public void execute(Runnable command) {
@@ -207,43 +204,97 @@ rs、wc、c之间的转换
     }
 ```
 
+> 说一说往线程池里提交一个任务会发生什么？
+>
 > 什么时候创建线程？
 >
 > 什么时候任务进入队列？
+>
+> 什么时候执行拒绝策略？
 
 创建corePoolSize个线程 -》 阻塞队列塞满 -> 创建到maximumPoolSize个线程 -》执行拒绝策略
 
-1. 如果线程池内的有效线程数少于核心线程数 corePoolSize, 那么就创建并启动一个线程来执行新提交的任务.（可调用xx方法预先启动核心线程）
+1. 如果线程池内的有效线程数少于核心线程数 corePoolSize, 那么就创建并启动一个线程来执行新提交的任务.可调用以下方法预先启动核心线程。
+
+   ```java
+       public boolean prestartCoreThread() {
+           return workerCountOf(ctl.get()) < corePoolSize &&
+               addWorker(null, true);
+       }
+   ```
+
 2. 如果线程池内的有效线程数达到了核心线程数 corePoolSize, 并且线程池内的阻塞队列未满, 那么就将新提交的任务加入到该阻塞队列中.
+
 3. 如果线程池内的有效线程数达到了核心线程数 corePoolSize 但却小于最大线程数 maximumPoolSize, 并且线程池内的阻塞队列已满, 那么就创建并启动一个线程来执行新提交的任务.
+
 4. 如果线程池内的有效线程数达到了最大线程数 maximumPoolSize, 并且线程池内的阻塞队列已满, 那么就让 RejectedExecutionHandler 根据它的拒绝策略来处理该任务, 默认的处理方式是直接抛异常.
 
-### addWorker方法
+### 4、shutdown()
 
-### 内部类Worker，及其runWorker方法
+为了使应用关闭时，线程池能够平滑关闭，我们可以把此方法添加到系统关闭钩子中。
+
+```java
+Runtime.getRuntime().addShutdownHook(new Thread(xxxxx::shutdown));
+```
+
+### 5、shutdownNow()
+
+### 6、addWorker方法，内部类Worker，及其runWorker方法
 
 > 启动一个 Worker对象中包含的线程 thread, 就相当于要执行 runWorker()方法, 并将该 Worker对象作为该方法的参数.
 
-### getTask方法
+### 7、getTask方法
 
 无线循环获取任务
 
+### 8、submit方法
+
+```java
+public abstract class AbstractExecutorService implements ExecutorService {
+    public Future<?> submit(Runnable task) {
+    }
+  
+    public <T> Future<T> submit(Runnable task, T result) {
+    }
+  
+    public <T> Future<T> submit(Callable<T> task) {
+    }
+}
+```
+
+### 9、isShutdown
+
+线程池处于SHUTDOWN状态时。（线程池的 isShutdown() 方法返回 true ）
+
+```java
+    public boolean isShutdown() {
+        return runStateAtLeast(ctl.get(), SHUTDOWN);
+    }
+
+```
 
 
+## 四、题外话
 
+### 1、怎么处理线程池中线程抛出的异常
 
-### 什么时候执行拒绝策略？
+在线程中捕获所有异常并按需处理。
 
-1. 线程池处于SHUTDOWN状态时。（线程池的 isShutdown() 方法返回 true ）
-2. 当线程池中处于运行状态的线程数达到maximumPoolSize，且阻塞队列满时, 继续提交的任务就会被拒绝.
+### 2、其他
 
+- 线程池是一种生产者 - 消费者模式
+  生产者：线程池使用方
+  消费者：线程池
 
+  任务队列、阻塞队列（队列满时，插入操作会阻塞。队列空时，获取元素操作会阻塞
 
-## 题外话
+- 为什么要使用多线程？
+  提升程序性能，降低延迟，提高吞吐量。在并发编程领域，提升性能本质上就是提升硬件的利用率，再具体点来说，就是提升 I/O 的利用率和 CPU 的利用率。解决 CPU 和 I/O 设备综合利用率问题，将硬件的性能发挥到极致。
 
-### 怎么处理线程池中线程抛出的异常
-
-1. 在线程中捕获所有异常并按需处理。
+- 多线程的应用场景
+  要想“降低延迟，提高吞吐量”，对应的方法呢，基本上有两个方向：
+  优化算法，（算法范畴）
+  将硬件（I/O， CPU）的性能发挥到极致。（并发编程）
 
 
 

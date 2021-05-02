@@ -2,6 +2,37 @@ HTTP 协议是基于 TCP
 
 
 
+## HTTP首部（图解HTTP第六章）
+
+http请求报文
+
+- 方法
+- URI
+- HTTP版本
+- HTTP首部字段：提供报文主体大小、所使用的语言、认证信息等内容。
+
+
+
+http响应报文
+
+- HTTP版本
+- 状态码（数字和原因短语）
+- HTTP首部字段
+
+
+
+4种HTTP首部字段类型
+
+- 通用首部字段
+- 请求首部字段
+- 响应首部字段
+- 实体首部字段
+  - Content-Type 
+
+
+
+
+
 ## 响应码
 
 [常用对照表](https://tool.oschina.net/commons?type=5)

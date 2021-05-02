@@ -1,31 +1,20 @@
 [TOC]
 
-## Spring AOP JDK和CGLib动态代理技术实现上的比较？
-
-1. CGLib创建的动态代理对象性能大概是JDK所创建的动态代理对象的10倍。
-2. CGLib创建代理对象所花费的时间是JDK动态代理的8倍。
-3. 无需频繁创建代理对象，比如singleton的代理对象或具有实例池的代理适合使用CGLib，反之适合采用JDK动态代理技术。
-
-
-
-## Aop的应用
+## 一、Aop的应用和作用
 
 事务管理、安全审计、日志处理、性能监控
-
-## Aop的作用
 
 使非业务代码更加模块化，使模块更加内聚。减少重复的非业务代码。
 
 
+## 二、Aop术语
 
-## Aop术语
-
-### 连接点
+### 1、连接点
 
 1. 用方法表示程序执行点
 2. 用相对位置表示方位
 
-### 切点
+### 2、切点
 
 用于定位特定的连接点
 
@@ -37,7 +26,7 @@ public interface Pointcut {
 }
 ```
 
-### 增强
+### 3、增强
 
 1. 用于添加到目标连接点上的一段执行逻辑
 2. 用于定位连接点的方位信息
@@ -50,13 +39,13 @@ public interface BeforeAdvice extends Advice {
 }
 ```
 
-### 目标对象
+### 4、目标对象
 
-### 引介
+### 5、引介
 
 为类添加属性和方法
 
-### 织入
+### 6、织入
 
 将增强添加到目标类的具体连接点上的过程。
 
@@ -64,17 +53,21 @@ public interface BeforeAdvice extends Advice {
 2. 类装载期织入 （AspectJ）
 3. 动态代理织入 （Spring）
 
-### 代理
+### 7、代理
 
 代理类（实现原类的接口，或则使原类的子类）
 
-### 切面
+### 8、切面
 
 由切点和增强（引介）组成
 
-## Aop源码阅读
 
-开启 @AspectJ 的两种方式
+
+## 三、Aop源码阅读/Aop的实现原理
+
+Spring的AOP构建于IOC容器之上，通过动态代理来创建增强对象。
+
+开启 @AspectJ 注解功能的两种方式
 
 1. 使用配置
 
@@ -197,4 +190,37 @@ private static void useClassProxyingIfNecessary(BeanDefinitionRegistry registry,
 }
 
 ```
+
+### Spring AOP JDK和CGLib动态代理技术实现上的比较？
+
+1. CGLib创建的动态代理对象性能大概是JDK所创建的动态代理对象的10倍。
+2. CGLib创建代理对象所花费的时间是JDK动态代理的8倍。
+3. 无需频繁创建代理对象，比如singleton的代理对象或具有实例池的代理适合使用CGLib，反之适合采用JDK动态代理技术。
+
+总结：CGLIB创建的对象性能好，但创建的时间更长。
+
+
+
+## 问题：
+
+1. 考察你对反射机制的了解和掌握程度。
+2. 动态代理解决了什么问题，在你业务系统中的应用场景是什么？
+3. 1. 包装RPC调用
+   2. AOP
+4. JDK 动态代理在设计和实现上与 cglib 等方式有什么不同，进而如何取舍？
+
+## 动态代理的实现方式、各自优势：
+
+JDK Proxy：反射、实现接口
+
+CGlib：实现子类、字节码
+
+
+## 参考：
+
+https://time.geekbang.org/column/article/7489
+
+[05.2 mybatis源码阅读](evernote:///view/7378256/s36/9eb1b321-8c11-4ee9-8550-4cab35ad7eee/9eb1b321-8c11-4ee9-8550-4cab35ad7eee/) mybatis动态代理
+
+[CGLIB动态代理](evernote:///view/7378256/s36/7328c9b5-cf7b-4760-8b8b-286accbec572/7328c9b5-cf7b-4760-8b8b-286accbec572/)
 
