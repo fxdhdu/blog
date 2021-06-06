@@ -177,6 +177,52 @@ public class LinkedList<E>
 }
 ```
 
+LinkedList的迭代器。当使用foreach语法遍历LinkedList时，本质上是先调用hasNext判断是否有下一个元素，然后再调用next获取下一个元素。因此当在foreach遍历时，删除（remove）LinkedList的最后两个元素不会抛出ConcurrentModificationException异常。因为hasNext中size在remove后减小了，返回false，不会进入next的checkForComodification方法中。
+
+```java
+    private class ListItr implements ListIterator<E> {
+        public boolean hasNext() {
+            return nextIndex < size;
+        }
+
+        public E next() {
+            checkForComodification();
+            if (!hasNext())
+                throw new NoSuchElementException();
+
+            lastReturned = next;
+            next = next.next;
+            nextIndex++;
+            return lastReturned.item;
+        }
+    }
+```
+
+不同的是，在ArrayList中使用foreacch删除元素时，删除倒数第二个不会抛出异常。因为只有倒数第二个元素删除时，下一次hasNext返回false，则不会进入next方法。
+
+```java
+    private class Itr implements Iterator<E> {
+        public boolean hasNext() {
+            return cursor != size;
+        }
+
+        @SuppressWarnings("unchecked")
+        public E next() {
+            checkForComodification();
+            int i = cursor;
+            if (i >= size)
+                throw new NoSuchElementException();
+            Object[] elementData = ArrayList.this.elementData;
+            if (i >= elementData.length)
+                throw new ConcurrentModificationException();
+            cursor = i + 1;
+            return (E) elementData[lastRet = i];
+        }
+    }
+```
+
+
+
 #### 总结
 
 ArrayList和LinkedList是Java集合框架下，列表（不是链表，链表是底层数据结构）接口List的两种不同实现。

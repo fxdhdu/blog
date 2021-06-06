@@ -118,5 +118,7 @@ seata的配置文件入口为[registry.conf](https://github.com/seata/seata/blob
 
 [quick start](http://seata.io/en-us/docs/user/quickstart.html)
 
+[SpringBoot+Dubbo+Seata分布式事务实战详解](https://www.jb51.net/article/164392.htm)
+
 
 
