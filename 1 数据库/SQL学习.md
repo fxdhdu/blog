@@ -136,7 +136,11 @@ where s.to_date = '9999-01-01';
 
 文本处理函数
 
-​	select upper(vend_name) as vend_name_upcase from vendors order by vend_name;
+select upper(vend_name) as vend_name_upcase from vendors order by vend_name; // 用于select的列
+
+select first_name from employees order by right(first_name, 2) asc; // 用于order by
+
+select (length("10,A,B") - length(replace("10,A,B", ",", ""))) as cnt;  // length计算字符串长度，replace做字符替换
 
 ![B6DE1F96-19F4-4188-907F-322E0C54E52A](/Users/fanxudong/IdeaProjects/blog/1 数据库/assert/B6DE1F96-19F4-4188-907F-322E0C54E52A.png)
 
@@ -195,6 +199,10 @@ select子句顺序
 ![402E12A4-613F-4B04-BED2-8DC5EB39DF9B](/Users/fanxudong/IdeaProjects/blog/1 数据库/assert/402E12A4-613F-4B04-BED2-8DC5EB39DF9B.png)
 
 ![8A4BCD34-22DC-48A0-9081-2ACC8CA1AFD0](/Users/fanxudong/IdeaProjects/blog/1 数据库/assert/8A4BCD34-22DC-48A0-9081-2ACC8CA1AFD0.png)
+
+
+
+select dept_no, group_concat(emp_no) from dept_emp group by dept_no; // 聚合函数group_concat（X，Y），其中X是要连接的字段，Y是连接时用的符号，可省略，默认为逗号。此函数必须与GROUP BY配合使用。此题以dept_no作为分组，将每个分组中不同的emp_no用逗号连接起来（即可省略Y）。
 
 
 
