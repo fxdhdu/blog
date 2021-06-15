@@ -224,3 +224,7 @@ https://time.geekbang.org/column/article/7489
 
 [CGLIB动态代理](evernote:///view/7378256/s36/7328c9b5-cf7b-4760-8b8b-286accbec572/7328c9b5-cf7b-4760-8b8b-286accbec572/)
 
+[[Java动态追踪技术探究](https://tech.meituan.com/2019/02/28/java-dynamic-trace.html)](https://tech.meituan.com/2019/02/28/java-dynamic-trace.html)
+
+![image-20210612204500993](/Users/fanxudong/Library/Application Support/typora-user-images/image-20210612204500993.png)
+

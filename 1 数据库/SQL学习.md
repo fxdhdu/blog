@@ -242,7 +242,7 @@ select dept_no, group_concat(emp_no) from dept_emp group by dept_no; // 聚合�
 
 ​	**order** **by** vend_name, prod_name;
 
-​	使用from联结表时，用where子句对表进行联结，第一个表的每一行与第二个表中的每一行配对，where子句过滤匹配的行。
+​	**使用from联结表**时，用where子句对表进行联结，第一个表的每一行与第二个表中的每一行配对，where子句过滤匹配的行。
 
 ​	没有联结条件的表关系返回的结果为笛卡尔积。检索出的行的数目将是第一个表中的行数乘以第二个表中的行数。
 
@@ -253,7 +253,8 @@ select dept_no, group_concat(emp_no) from dept_emp group by dept_no; // 聚合�
 ​	**inner** **join** products **on** vendors.vend_id = products.vend_id;
 
 INNER JOIN 两边表同时有对应的数据，即任何一边缺失数据就不显示。
-LEFT JOIN 会读取左边数据表的全部数据，即便右边表无对应数据。(可以使用is null来获取左边表不在右边表的行)
+LEFT JOIN 会读取左边数据表的全部数据，即便右边表无对应数据。(右边表对应的列会被设置为null，可以使用is null来获取左边表不在右边表的行) [**获取所有非manager的员工emp_no**](https://www.nowcoder.com/practice/32c53d06443346f4a2f2ca733c19660c?tpId=82&tags=&title=&difficulty=0&judgeStatus=0&rp=1)
+
 RIGHT JOIN 会读取右边数据表的全部数据，即便左边表无对应数据。
 
 
@@ -313,5 +314,13 @@ alter table actor add column create_date datetime NOT NULL default '2020-10-01 0
    order by s1.salary desc, s1.emp_no;   #多列排序
 
 2. 计算每个日期的新用户数。
+
+3. [**最差是第几名(一)**](https://www.nowcoder.com/practice/ae5e8273e73b4413823b676081bd355c?tpId=82&&tqId=37925&rp=1&ru=/activity/oj&qru=/ta/sql/question-ranking)
+
+   ```sql
+   select grade, sum(number) over(order by grade) as t_rank from class_grade;
+   ```
+
+   sum(a) over (order by b) 开窗函数，按照b列排序，将a依次相加。
 
  
