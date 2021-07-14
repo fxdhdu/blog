@@ -99,7 +99,7 @@ public ThreadPoolExecutor(int corePoolSize,
   最佳线程数 = CPU 核数 * [ 1 +（I/O 耗时 / CPU 耗时）]
   ```
   
-  ![img](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/98b71b72f01baf5f0968c7c3a2102fcb.png)
+  ![img](./asset/98b71b72f01baf5f0968c7c3a2102fcb.png)
 
 
 
@@ -177,7 +177,7 @@ rs、wc、c之间的转换
 | **TIDYING (清理状态)**  | 所有的任务都已终止了, workerCount (有效线程数) 为0, 线程池进入该状态后会调用 terminated() 方法以让该线程池进入TERMINATED 状态. 当线程池处于 SHUTDOWN 状态时, 如果此后线程池内没有线程了并且阻塞队列内也没有待执行的任务了 (即: 二者都为空), 线程池就会进入到该状态. 当线程池处于 STOP 状态时, 如果此后线程池内没有线程了, 线程池就会进入到该状态. |
 | **TERMINATED**          | terminated() 方法执行完后就进入该状态.                       |
 
-<img src="/Users/fanxudong/IdeaProjects/blog/4 Java/assert/image-20200613233849383.png" alt="image-20200613233849383" style="zoom:50%;" />
+<img src="./asset/image-20200613233849383.png" alt="image-20200613233849383" style="zoom:50%;" />
 
 ### 3、execute方法
 

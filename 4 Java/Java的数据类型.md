@@ -41,7 +41,7 @@ new Integer(150) == new Integer(150)
 ```
 
 4、
-![image-20200501191616763](./assert/image-20200501191616763.png)
+![image-20200501191616763](asset/image-20200501191616763.png)
 
 ## 数据类型转换
 
@@ -51,7 +51,7 @@ new Integer(150) == new Integer(150)
 
 1. 强制向下转型，数据丢失
 
-![image-20200501185942986](./assert/image-20200501185942986.png)
+![image-20200501185942986](asset/image-20200501185942986.png)
 
 ## switch支持的类型
 

@@ -15,7 +15,7 @@
 jps
 ```
 
-![image-20210418111845482](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/image-20210418111845482.png)
+![image-20210418111845482](asset/image-20210418111845482.png)
 
 示例二：输出jvm启动时配置的参数
 
@@ -23,7 +23,7 @@ jps
 jps -v
 ```
 
-![image-20210418112012567](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/image-20210418112012567.png)
+![image-20210418112012567](asset/image-20210418112012567.png)
 
 ## jstat
 
@@ -31,7 +31,7 @@ jps -v
 
 Usage：
 
-![image-20210418112319342](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/image-20210418112319342.png)
+![image-20210418112319342](asset/image-20210418112319342.png)
 
  vmid：本地jvm进程的id，或远程jvm的主机名、端口号。
 
@@ -45,7 +45,7 @@ count：采样个数
 jstat -gc 10373 5000 10
 ```
 
-![image-20210418113122104](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/image-20210418113122104.png)
+![image-20210418113122104](asset/image-20210418113122104.png)
 
 ```shell
 jstat -gcutil 10373 5000 10
@@ -59,7 +59,7 @@ jstat -gcutil 10373 5000 10
 jstat -class 10373 10000 10
 ```
 
-![image-20210418113558650](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/image-20210418113558650.png)
+![image-20210418113558650](asset/image-20210418113558650.png)
 
 ## jinfo
 
@@ -69,7 +69,7 @@ jstat -class 10373 10000 10
 
 作用：查看java进程对内存的使用情况。常用于定位OutOfMemoryError或内存不足问题。
 
-![image-20210418094508423](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/image-20210418094508423.png)
+![image-20210418094508423](asset/image-20210418094508423.png)
 
 示例一：按照占用空间的大小打印程序中类的列表。live表示只计算存活的对象。
 

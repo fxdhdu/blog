@@ -197,9 +197,9 @@ TCP管理的4个定时器
 
 ## TCP状态转换图/有限状态机
 
- ![image-20210214162303723](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/image-20210214162303723.png)
+ ![image-20210214162303723](./asset/image-20210214162303723.png)
 
-![image-20210214162234912](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/image-20210214162234912.png)
+![image-20210214162234912](./asset/image-20210214162234912.png)
 
 ## TIME_WAIT状态
 
@@ -214,7 +214,7 @@ TIME_WAIT状态也称为2MSL等待状态。在该状态中，TCP将会等待两�
 
 
 
-![image-20210214164139871](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/image-20210214164139871.png)
+![image-20210214164139871](./asset/image-20210214164139871.png)
 
 
 

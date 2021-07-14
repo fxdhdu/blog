@@ -46,7 +46,7 @@ public interface Callable<V> {
 
 ## JDK8自带的函数接口：
 
-![](./assert/29F2B2C1-2280-4029-8AF5-EC62465088A7.png)
+![](asset/29F2B2C1-2280-4029-8AF5-EC62465088A7.png)
 
 常用Function接口，它为我们省去定义一些不必要的函数接口，减少接口的数量。并支持链式操作（andThen）。
 
@@ -56,7 +56,7 @@ BiFunction接口就是比Function接口多了一个输入而已。（同理BiCon
 
 4中方法引用的形式：
 
-![](./assert/F68BBF04-4D44-4AB6-92FA-D826A700B918.png)
+![](asset/F68BBF04-4D44-4AB6-92FA-D826A700B918.png)
 
 Java是强类型语言，不能在代码的任何地方可写Lambda表达式，使用Lambda表达式的依据是必须有相应的函数接口。Lambda的类型就是对应函数接口的类型。
 
@@ -64,7 +64,7 @@ Lambda表达式另一个依据是**类型推断**机制，在上下文信息足�
 
 
 
-![](./assert/49B0DB42-E307-4786-8F62-310CED4CD78E.png)
+![](asset/49B0DB42-E307-4786-8F62-310CED4CD78E.png)
 
 级联表达式和柯里化
 
@@ -84,7 +84,7 @@ Java 8中，Lambda表达式首先会生成一个**私有静态函数**，这个�
 
 -p表示输出所有类及成员
 
-![](./assert/3D94F5D5-09ED-4A25-B513-8BE1288EE2E2.png)
+![](asset/3D94F5D5-09ED-4A25-B513-8BE1288EE2E2.png)
 
 
 

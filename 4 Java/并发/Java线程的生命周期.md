@@ -2,7 +2,7 @@
 
 ## 通用的线程生命周期（五态）
 
-![通用线程状态转换图——五态模型](../assert/9bbc6fa7fb4d631484aa953626cf6ae5.png)
+![通用线程状态转换图——五态模型](../asset/9bbc6fa7fb4d631484aa953626cf6ae5.png)
 
 
 1. 初始状态
@@ -22,7 +22,7 @@
 5. TIMED_WAITING（有时限等待）
 6. TERMINATED（终止状态）
 
-![3f6c6bf95a6e8627bdf3cb621bbb7f8c](../assert/3f6c6bf95a6e8627bdf3cb621bbb7f8c.png)
+![3f6c6bf95a6e8627bdf3cb621bbb7f8c](../asset/3f6c6bf95a6e8627bdf3cb621bbb7f8c.png)
 
 可在Thread类中查看Java线程的6种状态
 ```java
@@ -91,9 +91,9 @@
 
 BLOCKED和WAITING的区别，BLOCKED是阻塞于获取锁，WAITING是已经获取到锁，然后调用wait方法让出锁资源，等待其他出发条件。
 
-![线程状态转换](../assert/949937DB-1B3C-4A43-BBC8-9FDC88E504EF.png)
+![线程状态转换](../asset/949937DB-1B3C-4A43-BBC8-9FDC88E504EF.png)
 
-![](../assert/3169b7ca899afeb0359f132fb77c29dc.png)
+![](../asset/3169b7ca899afeb0359f132fb77c29dc.png)
 
 ## 执行new Thread，代码做了什么？
 

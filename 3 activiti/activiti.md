@@ -20,9 +20,9 @@
 
 
 
-![img](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/bfc57552-9d60-3483-9577-3503688de2d4.png)
+![img](./asset/bfc57552-9d60-3483-9577-3503688de2d4.png)
 
-![img](/Users/fanxudong/IdeaProjects/blog/11 activiti/asset/20190214113258.png)
+![img](./asset/20190214113258.png)
 
 大致包括：
 
@@ -274,7 +274,7 @@ runtimeService.suspendProcessInstanceById(instance.getProcessInstanceId());
 
 在创建流程后会在流程数据库中插入一条ExecutionEntity数据，在act_ru_execution表中可以看到这个execution的id和proc_inst_id的值是一样的
 
-![D27F86F5-3D32-49FC-8EA0-96ED4030CACA](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/D27F86F5-3D32-49FC-8EA0-96ED4030CACA.png)
+![D27F86F5-3D32-49FC-8EA0-96ED4030CACA](./asset/D27F86F5-3D32-49FC-8EA0-96ED4030CACA.png)
 
 
 
@@ -297,7 +297,7 @@ Activiti使用命令模式作为基础开发模式。将命令进行封装，发
 
 activiti定义了一个拦截器链，链上的每个拦截器都有个next，会一直next执行下去。以CompleteTaskCmd为例，拦截器链为：
 
-![img](/Users/fanxudong/IdeaProjects/blog/11 activiti/asset/20191221235530.png)
+![img](./asset/20191221235530.png)
 
 #### customPreCommandInterceptors（自定义前置拦截器）
 
