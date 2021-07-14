@@ -142,17 +142,17 @@ select first_name from employees order by right(first_name, 2) asc; // 用于ord
 
 select (length("10,A,B") - length(replace("10,A,B", ",", ""))) as cnt;  // length计算字符串长度，replace做字符替换
 
-![B6DE1F96-19F4-4188-907F-322E0C54E52A](/Users/fanxudong/IdeaProjects/blog/1 数据库/assert/B6DE1F96-19F4-4188-907F-322E0C54E52A.png)
+![B6DE1F96-19F4-4188-907F-322E0C54E52A](asset/B6DE1F96-19F4-4188-907F-322E0C54E52A.png)
 
-​	![3B1C1C01-93C4-4279-855C-1E6BA5C6579F](/Users/fanxudong/IdeaProjects/blog/1 数据库/assert/3B1C1C01-93C4-4279-855C-1E6BA5C6579F.png)
+​	![3B1C1C01-93C4-4279-855C-1E6BA5C6579F](asset/3B1C1C01-93C4-4279-855C-1E6BA5C6579F.png)
 
 日期和时间处理函数
 
-![2D040BF7-A399-4FE7-BB79-E7B6A1728A68](/Users/fanxudong/IdeaProjects/blog/1 数据库/assert/2D040BF7-A399-4FE7-BB79-E7B6A1728A68.png)
+![2D040BF7-A399-4FE7-BB79-E7B6A1728A68](asset/2D040BF7-A399-4FE7-BB79-E7B6A1728A68.png)
 
 数值处理函数
 
-![0D1C0E81-B173-4BEB-917C-0CF02189FF9D](/Users/fanxudong/IdeaProjects/blog/1 数据库/assert/0D1C0E81-B173-4BEB-917C-0CF02189FF9D.png)
+![0D1C0E81-B173-4BEB-917C-0CF02189FF9D](asset/0D1C0E81-B173-4BEB-917C-0CF02189FF9D.png)
 
 
 
@@ -160,7 +160,7 @@ select (length("10,A,B") - length(replace("10,A,B", ",", ""))) as cnt;  // lengt
 
 聚集函数：运行在行组上，计算和返回单个值的函数
 
-![C95C73D3-CB10-446F-B87B-7808D7982CAE](/Users/fanxudong/IdeaProjects/blog/1 数据库/assert/C95C73D3-CB10-446F-B87B-7808D7982CAE.png)
+![C95C73D3-CB10-446F-B87B-7808D7982CAE](asset/C95C73D3-CB10-446F-B87B-7808D7982CAE.png)
 
 
 
@@ -196,9 +196,9 @@ Order by ordertotal;
 
 select子句顺序
 
-![402E12A4-613F-4B04-BED2-8DC5EB39DF9B](/Users/fanxudong/IdeaProjects/blog/1 数据库/assert/402E12A4-613F-4B04-BED2-8DC5EB39DF9B.png)
+![402E12A4-613F-4B04-BED2-8DC5EB39DF9B](asset/402E12A4-613F-4B04-BED2-8DC5EB39DF9B.png)
 
-![8A4BCD34-22DC-48A0-9081-2ACC8CA1AFD0](/Users/fanxudong/IdeaProjects/blog/1 数据库/assert/8A4BCD34-22DC-48A0-9081-2ACC8CA1AFD0.png)
+![8A4BCD34-22DC-48A0-9081-2ACC8CA1AFD0](asset/8A4BCD34-22DC-48A0-9081-2ACC8CA1AFD0.png)
 
 
 
@@ -224,9 +224,9 @@ select dept_no, group_concat(emp_no) from dept_emp group by dept_no; // 聚合�
 
 ​	**如何构建子查询：**
 
-![B0CD3D36-1A92-4F4D-B60B-56280857A68B](/Users/fanxudong/IdeaProjects/blog/1 数据库/assert/B0CD3D36-1A92-4F4D-B60B-56280857A68B.png)
+![B0CD3D36-1A92-4F4D-B60B-56280857A68B](asset/B0CD3D36-1A92-4F4D-B60B-56280857A68B.png)
 
-![029586C5-4CAF-4F93-A4BD-593018E03DEC](/Users/fanxudong/IdeaProjects/blog/1 数据库/assert/029586C5-4CAF-4F93-A4BD-593018E03DEC.png)
+![029586C5-4CAF-4F93-A4BD-593018E03DEC](asset/029586C5-4CAF-4F93-A4BD-593018E03DEC.png)
 
 
 

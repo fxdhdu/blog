@@ -55,7 +55,7 @@ Spring Cloud 主要负责微服务集群的服务治理工作
 
 - 模块化轻量级
 
-![img](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/699208dbe6b43ee397a020ea733c342c.png)
+![img](./asset/699208dbe6b43ee397a020ea733c342c.png)
 
 
 - 再封装、再抽象	

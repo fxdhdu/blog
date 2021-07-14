@@ -32,4 +32,4 @@
 
 双栈实现队列
 
-<img src="/Users/fanxudong/IdeaProjects/blog/6 数据结构和算法/asset/image-20200704075221371.png" alt="image-20200704075221371" style="zoom:67%;" />
+<img src="./asset/image-20200704075221371.png" alt="image-20200704075221371" style="zoom:67%;" />

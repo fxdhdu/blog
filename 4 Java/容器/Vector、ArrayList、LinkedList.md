@@ -4,7 +4,7 @@
 
 ## Java集合框架
 
-![](../assert/675536edf1563b11ab7ead0def1215c7.png)
+![](../asset/675536edf1563b11ab7ead0def1215c7.png)
 
 集合的根Collection
 

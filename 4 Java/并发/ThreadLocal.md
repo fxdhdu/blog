@@ -1,6 +1,6 @@
 ## ThreadLocal、Thread、ThreadLocalMap
 
-![在这里插入图片描述](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyODYyODgy,size_16,color_FFFFFF,t_70.png)
+![在这里插入图片描述](./asset/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyODYyODgy,size_16,color_FFFFFF,t_70.png)
 
 ThreadLocal称为线程本地变量、线程本地存储，用于线程间的数据隔离。
 

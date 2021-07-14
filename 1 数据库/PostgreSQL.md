@@ -22,9 +22,9 @@ PG使用共享内存作为主要的数据共享、进程通信的方式。PG在�
 
 
 
-![image-20210328104511448](/Users/fanxudong/IdeaProjects/blog/1 数据库/assert/image-20210328104511448.png)
+![image-20210328104511448](asset/image-20210328104511448.png)
 
-![image-20210328104720205](/Users/fanxudong/IdeaProjects/blog/1 数据库/assert/image-20210328104720205.png)
+![image-20210328104720205](asset/image-20210328104720205.png)
 
 #### 多线程和多进程的比较
 
@@ -141,7 +141,7 @@ CREATE TABLE measurement_y2006m02 PARTITION OF measurement
 
 默认是已提交
 
-![image-20210328142909313](/Users/fanxudong/IdeaProjects/blog/1 数据库/assert/image-20210328142909313.png)
+![image-20210328142909313](asset/image-20210328142909313.png)
 
 ## 参考
 
