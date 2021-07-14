@@ -267,7 +267,7 @@ kafka中的位移有两种
 
 ### PageCache
 
-Cache Filesystem Cache PageCache缓存：使用操作系统页缓存来存储数据。
+Cache Filesystem Cache PageCache缓存：使用操作系统页缓存来存储数据。避免在JVM内部缓存数据。
 
 ### 顺序读写磁盘
 
