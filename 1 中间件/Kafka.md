@@ -4,17 +4,17 @@
 
 > Apache Kafka是一种分布式的、基于发布/订阅的消息系统，由Scala语言编写而成。它具备快速、可扩展、可持久化的特点。
 
+说明：
+
 1. 与分布式相对的还有主备模式。比如数据库的主备部署，只有主节点提供服务（写入），备节点只是同步数据（只读），主节点挂了以后进行主备倒换，浮动IP飘到备节点。
-
 2. 与发布/订阅相对的还有点对点模式（队列模式）。
-
-3. 既然是分布式系统，那一定满足CAP理论。Kafka中CA的矛盾是这样的，要想实现强一致性（C），leader接收到数据之后，就必须等到所有replica同步过去之后才能响应procuder ack。如果replication同步失败，则leader无法响应ack，这就没法实现可用性（A）。kafka 使用ISR实现C 和 A之间的平衡，可对ISR剔除和加入replica的规则参数的配置来动态平衡CA。
+3. 既然是分布式系统，那一定满足CAP理论。Kafka中CA的矛盾是这样的，要想实现强一致性（C），leader接收到数据之后，就必须等到所有replica同步过去之后才能响应producer ack。如果replication同步失败，则leader无法响应ack，这就没法实现可用性（A）。kafka 使用ISR实现C 和 A之间的平衡，可对ISR剔除和加入replica的规则参数的配置来动态平衡CA。
 
 ### Kafka的关键特性
 
-- （快速）近乎实时的消息处理能力。高效查询和存储消息，批量读写消息，批量压缩消息。顺序读写磁盘。kafka每秒可以处理几十万条消息，它的延迟最低只有几毫秒.
+- 快速：近乎实时的消息处理能力。高效查询和存储消息，批量读写消息，批量压缩消息。顺序读写磁盘。kafka每秒可以处理几十万条消息，它的延迟最低只有几毫秒.
 
-- （可扩展）在线增加分区，在线水平扩展。
+- 可扩展：在线增加分区，在线水平扩展。
 
 - 数据容灾能力：分区可创建多个副本，Leader副本负责读写，Follwer副本与Leader同步。
 
@@ -44,7 +44,7 @@
   - 由Consumer决定何时、如何消费消息。Consumer使用pull方式拉取消息，并在Consumer端保存消费的位置。
   - 支持Consumer水平扩展：多个Consumer加入一个Consumer Group。一个Consumer中，每个分区分配给一个Consumer。
 
-- 缓冲&峰值处理能力（把数据库写操作写入Kafka，然后实现消费者来读取Kafka消息，进行数据库写入。）
+- 缓冲&峰值处理能力（把对数据库的写操作作为一个消息写入Kafka，然后实现消费者来读取Kafka消息，进行数据库写入。）
 
 - 异步通信（实现异步接口，通过Kafka消息来获取接口执行结果。）
 
@@ -136,9 +136,9 @@ ISR集合中的副本需要满足以下两个条件：
   retries：如果没有ack相应，失败之后重试的次数
 ```
 
-![A31268CB-E566-4C44-B6E1-8A6195BBA10A](/Users/fanxudong/IdeaProjects/blog/10 分布式系统设计/asset/A31268CB-E566-4C44-B6E1-8A6195BBA10A.png)
+![A31268CB-E566-4C44-B6E1-8A6195BBA10A](./asset/A31268CB-E566-4C44-B6E1-8A6195BBA10A.png)
 
-![1196488C-5DB3-44DB-9CBE-F1C6B514E05C](/Users/fanxudong/IdeaProjects/blog/10 分布式系统设计/asset/1196488C-5DB3-44DB-9CBE-F1C6B514E05C.png)
+![1196488C-5DB3-44DB-9CBE-F1C6B514E05C](./asset/1196488C-5DB3-44DB-9CBE-F1C6B514E05C.png)
 
 ### producer开发
 
@@ -146,7 +146,7 @@ ISR集合中的副本需要满足以下两个条件：
 
 #### 丢消息的原因
 
-![image-20210412223415202](/Users/fanxudong/IdeaProjects/blog/10 分布式系统设计/asset/image-20210412223415202.png)
+![image-20210412223415202](./asset/image-20210412223415202.png)
 
 #### 防止消息丢失
 
@@ -173,7 +173,7 @@ ISR集合中的副本需要满足以下两个条件：
 
 #### 消息乱序的原因
 
-![C1034FDE-C383-482B-A546-D26C4A361A64](/Users/fanxudong/IdeaProjects/blog/10 分布式系统设计/asset/C1034FDE-C383-482B-A546-D26C4A361A64.png)
+![C1034FDE-C383-482B-A546-D26C4A361A64](./asset/C1034FDE-C383-482B-A546-D26C4A361A64.png)
 
 #### 防止消息乱序
 
@@ -223,9 +223,9 @@ kafka中的位移有两种
 
 ### 什么是消费者组
 
-![F6AE7380-5DD5-4A7D-B93C-E2EC4F63ADFF](/Users/fanxudong/IdeaProjects/blog/10 分布式系统设计/asset/F6AE7380-5DD5-4A7D-B93C-E2EC4F63ADFF.png)
+![F6AE7380-5DD5-4A7D-B93C-E2EC4F63ADFF](./asset/F6AE7380-5DD5-4A7D-B93C-E2EC4F63ADFF.png)
 
-![51AF0B52-4480-490F-B8DA-FE6874D446A7](/Users/fanxudong/IdeaProjects/blog/10 分布式系统设计/asset/51AF0B52-4480-490F-B8DA-FE6874D446A7.png)
+![51AF0B52-4480-490F-B8DA-FE6874D446A7](./asset/51AF0B52-4480-490F-B8DA-FE6874D446A7.png)
 
   - Group用于实现消息的广播（所有消费者不同的group）、独占模式（所有消费者一个group）
   - 实现消费者水平扩展（高伸缩性）、故障转移（高容错性）
@@ -233,29 +233,29 @@ kafka中的位移有两种
 
 ### 基于对列/基于发布订阅消息引擎模型
 
-![6E61EA05-98FE-4629-8345-A1D6F027E754](/Users/fanxudong/IdeaProjects/blog/10 分布式系统设计/asset/6E61EA05-98FE-4629-8345-A1D6F027E754.png)
+![6E61EA05-98FE-4629-8345-A1D6F027E754](./asset/6E61EA05-98FE-4629-8345-A1D6F027E754.png)
 
 ### 重平衡（rebalance）
 
-![08215E9E-A122-4024-916F-DCCDE6FF53FC](/Users/fanxudong/IdeaProjects/blog/10 分布式系统设计/asset/08215E9E-A122-4024-916F-DCCDE6FF53FC.png)
+![08215E9E-A122-4024-916F-DCCDE6FF53FC](./asset/08215E9E-A122-4024-916F-DCCDE6FF53FC.png)
 
 （1）Consumer增加或删除会触发 Consumer Group的Rebalance 
 
 （2）Broker的增加或者减少都会触发 Consumer Rebalance
 
-![AC86A08D-3CF2-4661-95E4-CF9D77A904C3](/Users/fanxudong/IdeaProjects/blog/10 分布式系统设计/asset/AC86A08D-3CF2-4661-95E4-CF9D77A904C3.png)
+![AC86A08D-3CF2-4661-95E4-CF9D77A904C3](./asset/AC86A08D-3CF2-4661-95E4-CF9D77A904C3.png)
 
 ### 生产者发送消息过程
 
-![image-20200726111114684](/Users/fanxudong/IdeaProjects/blog/10 分布式系统设计/asset/image-20200726111114684.png)
+![image-20200726111114684](./asset/image-20200726111114684.png)
 
 ### 消息顺序
 
-![A000A126-8E07-44B5-BD70-436BC01D0396](/Users/fanxudong/IdeaProjects/blog/10 分布式系统设计/asset/A000A126-8E07-44B5-BD70-436BC01D0396.png)
+![A000A126-8E07-44B5-BD70-436BC01D0396](./asset/A000A126-8E07-44B5-BD70-436BC01D0396.png)
 
 ## kafka的高性能
 
-![image-20200704190907521](/Users/fanxudong/Library/Application Support/typora-user-images/image-20200704190907521.png)
+![image-20200704190907521](./asset/image-20200704190907521.png)
 
 ### 消息分区
 
