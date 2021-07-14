@@ -2,7 +2,7 @@
 
 ## Java异常继承体系
 
-![Java异常继承体系](./assert/C43DB5C8-7A74-469B-AACF-6BE37B3395E4.png)
+![Java异常继承体系](asset/C43DB5C8-7A74-469B-AACF-6BE37B3395E4.png)
 
 - unchecked exceptions （运行时异常）
   - 派生于Error的错误不用处理，因为通常代码无法处理。
@@ -14,7 +14,7 @@
   - Checked Exception 的假设是我们捕获了异常，然后恢复程序。
   - 编译器将检查你是否为所有的checked exceptions提供了异常处理机制。
   - 比如IOException就必须做异常处理，否则编译无法通过。
-   ![image-20200501183447589](./assert/image-20200501183447589.png)
+   ![image-20200501183447589](asset/image-20200501183447589.png)
   
   
 

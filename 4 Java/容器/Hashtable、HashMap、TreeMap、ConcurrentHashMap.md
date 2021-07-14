@@ -242,7 +242,7 @@ sizeCtl 用于记录当前并发扩容的线程数量。
 
 [ConcurrentHashMap的transfer](https://blog.csdn.net/luzhensmart/article/details/105968886)
 
-![4](../assert/Java8ConcurrentHashMap结构.png)
+![4](../asset/Java8ConcurrentHashMap结构.png)
 
 ```java
 public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
@@ -344,7 +344,7 @@ public native int hashCode();
    
 ### 相关编程规范
 
-![](../assert/8ECBE9B8-702E-47DE-B590-479A46FC8916.png)
+![](../asset/8ECBE9B8-702E-47DE-B590-479A46FC8916.png)
 
 
 

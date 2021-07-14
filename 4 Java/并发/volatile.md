@@ -93,7 +93,7 @@ CPU高速缓存：存放20%常用数据和指令
 
 多级缓存（Cache Line）
 
-![img](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/多核CPU架构.png)
+![img](../asset/多核CPU架构.png)
 
 CPU 访问主存数据时存在二个局部性现象：
 
@@ -132,13 +132,13 @@ CPU 访问主存数据时存在二个局部性现象：
 
   (工作内容中操作变量，主内存中存储和传递变量)
 
-  <img src="/Users/fanxudong/IdeaProjects/blog/4 Java/assert/image-20200531154502649.png" alt="image-20200531154502649" style="zoom:50%;" />
+  <img src="../asset/image-20200531154502649.png" alt="image-20200531154502649" style="zoom:50%;" />
 
   
 
 - JMM与真实内存架构
 
-  ![img](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/JMM与真实内存架构.png)
+  ![img](../asset/JMM与真实内存架构.png)
 
   通过JMM来理解可见性、原子性、有序性问题的存在，关键字volatile怎么解决可见性有序性问题。
 
@@ -184,7 +184,7 @@ JUC包实现原子性问题：CAS指令
 
 ​	主存 -》 工作内存：read ->load;工作内存 -》 主存：store -〉 write
 
-<img src="/Users/fanxudong/IdeaProjects/blog/4 Java/assert/image-20200531185057593.png" alt="image-20200531185057593" style="zoom:50%;" />
+<img src="../asset/image-20200531185057593.png" alt="image-20200531185057593" style="zoom:50%;" />
 
 ​	8种操作需要满足的规则  + volatile型变量的特殊规则：确定了哪些内存访问操作在并发下是安全的。可通过等效的先行发生原则来判断。
 

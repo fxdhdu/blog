@@ -71,7 +71,7 @@ NIO（Nonblocking I/O，非阻塞IO）：NIO的单线程能处理连接的数量
 
 通道是数据来源或数据写入的目的地。（和流有什么区别？）
 
-![](./assert/channel.png)
+![](asset/channel.png)
 
 - FileChannel：文件通道，用于文件的读和写。不能配置为非阻塞，没有意义。
 - DatagramChannel：用于 UDP 连接的接收和发送
@@ -85,7 +85,7 @@ NIO（Nonblocking I/O，非阻塞IO）：NIO的单线程能处理连接的数量
 
 一个 Buffer 本质上是内存中的一块，我们可以将数据写入这块内存，之后从这块内存获取数据。
 
-![](./assert/6.png)
+![](asset/6.png)
 
 
 

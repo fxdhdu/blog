@@ -32,7 +32,7 @@ private transient Thread exclusiveOwnerThread; //继承自AbstractOwnableSynchro
 
 ### 队列示意图
 
-![image-20200701005637454](/Users/fanxudong/IdeaProjects/blog/4 Java/assert/image-20200701005637454.png)
+![image-20200701005637454](./asset/image-20200701005637454.png)
 
 ### 队列成员node
 

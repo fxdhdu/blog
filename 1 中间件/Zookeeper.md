@@ -1,16 +1,6 @@
 [TOC]
 
-
-
-## 资料
-
-[从Paxos到Zookeeper](https://book.douban.com/subject/26292004/)
-
-
-
-## 基本概念
-
-Paxos，分布式数据一致性解决方案。原语，
+## Zookeeper的基本概念
 
 - ZooKeeper集群下机器节点的角色
   - Leader：为客户端提供读写服务
@@ -36,6 +26,9 @@ Paxos，分布式数据一致性解决方案。原语，
   - DELETE
   - ADMIN
 
+## Paxos协议
+
+分布式数据一致性解决方案。原语，
 
 ## ZAB协议
 
@@ -116,9 +109,6 @@ ZooKeeper中client与server通过TCP长连接进行通行。使用TCP长连接�
 
 8. zk的客户端：zkCli.sh、Java原生Api、ZkClient、Curator
 
+## 参考
 
-
-
-
-
-
+[从Paxos到Zookeeper](https://book.douban.com/subject/26292004/)
