@@ -365,3 +365,8 @@ rebalance重平衡操作。
 [kafka：简介、使用场景、设计原理、主要配置及集群搭建](https://www.cnblogs.com/likehua/p/3999538.html)
 
 [消息中间件（一）MQ详解及四大MQ比较](https://blog.csdn.net/wqc19920906/article/details/82193316/)
+
+
+## 云原生消息队列服务
+
+[字节跳动新一代云原生消息队列实践](https://blog.csdn.net/weixin_46399686/article/details/135975591)

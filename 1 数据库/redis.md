@@ -1,3 +1,5 @@
+[TOC]
+
 Redis采用的是基于内存的采用的是**单进程单线程**模型的 **KV 数据库**，**由C语言编写**，官方提供的数据是可以达到100000+的QPS（每秒内查询次数）。
 
 1、redis完全基于内存，绝大部分请求是存粹的内存操作。
@@ -20,8 +22,6 @@ Redis的性能瓶颈不是CPU，最可能在机器内存大小或网络带宽。
 
 [官方文章How fast is Redis?](https://redis.io/topics/benchmarks)
 
-
-
 渐进式 rehash：把一次性大量拷贝的开销，分摊到了多次处理请求的过程中，避免了耗时操作，保证了数据的快速访问。
 
 跳表：多级索引
@@ -30,3 +30,5 @@ Redis的性能瓶颈不是CPU，最可能在机器内存大小或网络带宽。
 
 redis的string类型的扩容机制是怎样的
 
+[字节跳动极高可用 KV 存储系统详解](https://zhuanlan.zhihu.com/p/614227806) 磁盘存储KV，容量比内存KV大，牺牲一点延迟。
+[Abase2：字节跳动新一代高可用 NoSQL 数据库](https://maimai.cn/article/detail?fid=1735122374&efid=3dnKOpRsrT5HD6dYMVu0yA)
